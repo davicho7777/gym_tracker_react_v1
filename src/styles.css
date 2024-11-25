@@ -1,0 +1,358 @@
+/* Estilos globales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+body.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+
+/* Contenedor principal */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Utilidades */
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
+.space-x-2 {
+  gap: 0.5rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+/* Texto */
+.text-2xl {
+  font-size: 2rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-white {
+  color: #fff;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+/* Botones */
+button {
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  width: auto;
+  max-width: 100%;
+  border-radius: 0.375rem;
+  border: 1px solid #d1d5db;
+  background-color: #6366f1;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #4f46e5;
+}
+
+button:active {
+  background-color: #3b82f6;
+}
+
+.dark-mode-button {
+  background-color: #fff;
+  border: none;
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.dark-mode-button:hover {
+  background-color: #ccc;
+}
+
+.dark-mode-button:active {
+  background-color: #fff;
+}
+
+/* Contenedor de botones */
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    font-size: 0.875rem;
+    padding: 0.4em 0.8em;
+  }
+}
+
+/* Tabla */
+.table-container {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.table-header {
+  background-color: #f3f4f6;
+  color: #333;
+}
+
+.table-header th {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.table-body td {
+  padding: 0.5rem;
+  border-top: 1px solid #e5e7eb;
+  color: #333;
+}
+
+.table-body tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.table-body tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+/* Modo oscuro */
+body.dark-mode .table {
+  background-color: #444;
+}
+
+body.dark-mode .table-header {
+  background-color: #555;
+  color: #fff;
+}
+
+body.dark-mode .table-header th {
+  color: #fff;
+}
+
+body.dark-mode .table-body td {
+  border-top: 1px solid #fff;
+  color: #fff;
+}
+
+body.dark-mode .table-body tr:nth-child(even) {
+  background-color: #555;
+}
+
+body.dark-mode .table-body tr:nth-child(odd) {
+  background-color: #444;
+}
+
+@media (max-width: 768px) {
+  .table {
+    min-width: 100%;
+  }
+
+  .table-header th, 
+  .table-body td {
+    font-size: 0.875rem;
+    padding: 0.4rem;
+  }
+}
+
+/* Estilos para el switch de modo oscuro */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  transform: translateY(-50%);
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  transform: translateY(2px);
+  position: absolute;
+  content: "";
+  left: 5px;
+  width: 15px;
+  height: 15px;
+  background-color: white;
+  transition: 0.2s;
+}
+
+input:checked +.slider {
+  background-color: #2196F3;
+}
+
+input:focus +.slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked +.slider:before {
+  transform: translate(16px,2px);
+  
+}
+
+.slider.round {
+  border-radius: 20px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Modo Tripi */
+body.tripi-mode {
+  background-color: black;
+  color: white;
+  animation: tripiBackground 5s infinite alternate;
+}
+
+body.tripi-mode .table {
+  background-color: black;
+  animation: tripiTable 5s infinite alternate;
+}
+
+body.tripi-mode .table-header {
+  background-color: black;
+  color: white;
+}
+
+body.tripi-mode .table-header th {
+  color: white;
+}
+
+body.tripi-mode .table-body td {
+  border-top: 1px solid white;
+  color: white;
+}
+
+body.tripi-mode .table-body tr:nth-child(even) {
+  background-color: black;
+}
+
+body.tripi-mode .table-body tr:nth-child(odd) {
+  background-color: black;
+}
+
+body.tripi-mode button {
+  background-color: #ff00ff;
+  animation: tripiButton 5s infinite alternate;
+}
+
+body.tripi-mode button:hover {
+  background-color: #00ffff;
+}
+
+body.tripi-mode button:active {
+  background-color: #ffff00;
+}
+
+@keyframes tripiBackground {
+  0% { background-color: black; }
+  25% { background-color: #ff00ff; }
+  50% { background-color: #00ffff; }
+  75% { background-color: #ffff00; }
+  100% { background-color: black; }
+}
+
+@keyframes tripiTable {
+  0% { background-color: black; }
+  25% { background-color: #ff00ff; }
+  50% { background-color: #00ffff; }
+  75% { background-color: #ffff00; }
+  100% { background-color: black; }
+}
+
+@keyframes tripiButton {
+  0% { background-color: #ff00ff; }
+  25% { background-color: #00ffff; }
+  50% { background-color: #ffff00; }
+  75% { background-color: #ff0000; }
+  100% { background-color: #ff00ff; }
+}
