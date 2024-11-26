@@ -28,27 +28,24 @@ const RepCounter = ({ id, initialValue = 0 }) => {
 
   useEffect(() => {
     const savedCount = localStorage.getItem(id);
-    if (savedCount) setCount(parseInt(savedCount, 10));
+    if (savedCount) setCount(savedCount);
   }, [id]);
 
   useEffect(() => {
-    localStorage.setItem(id, count.toString());
+    localStorage.setItem(id, count);
   }, [id, count]);
 
   const handleInputChange = (e) => {
-    const value = parseInt(e.target.value, 10);
-    if (!isNaN(value) && value >= 0) {
-      setCount(value);
-    }
+    const value = e.target.value;
+    setCount(value);
   };
 
   return (
     <Input
-      type="number"
+      type="text"
       value={count}
       onChange={handleInputChange}
       className="w-20 text-center"
-      min="0"
     />
   );
 };
@@ -140,13 +137,13 @@ export default function WorkoutTracker() {
   }
 
   function saveInputs() {
-    document.querySelectorAll('input[type="number"]').forEach(numberInput => {
+    document.querySelectorAll('input[type="text"]').forEach(numberInput => {
       localStorage.setItem(numberInput.id, numberInput.value);
     });
   }
 
   function restoreInputs() {
-    document.querySelectorAll('input[type="number"]').forEach(numberInput => {
+    document.querySelectorAll('input[type="text"]').forEach(numberInput => {
       numberInput.value = localStorage.getItem(numberInput.id) || '';
     });
   }
@@ -172,20 +169,23 @@ export default function WorkoutTracker() {
       week: currentWeek,
       days: {}
     };
-
+  
     Object.keys(exercises[currentWeek] || {}).forEach(day => {
-      const dayData = exercises[currentWeek][day].map((exercise, index) => ({
-        name: getExerciseName(day, index),
-        sets: [
-          { set1: localStorage.getItem(`reps-${currentWeek}-${day}-${index}-set1`) || '0' },
-          { set2: localStorage.getItem(`reps-${currentWeek}-${day}-${index}-set2`) || '0' },
-          { set3: localStorage.getItem(`reps-${currentWeek}-${day}-${index}-set3`) || '0' }
-        ],
-        weight: localStorage.getItem(`number-${currentWeek}-${day}-${index}`) || '0'
-      }));
+      const dayData = exercises[currentWeek][day].map((exercise, index) => {
+        const reps = [1, 2, 3].map(set => {
+          const repValue = localStorage.getItem(`reps-${currentWeek}-${day}-${index}-set${set}`) || '0';
+          return { [`set${set}`]: parseFloat(repValue) || 0 };
+        });
+        const weight = localStorage.getItem(`number-${currentWeek}-${day}-${index}`) || '0';
+        return {
+          name: getExerciseName(day, index),
+          sets: reps,
+          weight: parseFloat(weight) || 0
+        };
+      });
       workoutData.days[day] = dayData;
     });
-
+  
     if (auth.currentUser) {
       addWorkout(auth.currentUser, workoutData)
         .then(() => {
@@ -406,7 +406,7 @@ return (
                             <div className="mt-2 flex items-center justify-between">
                               <span className="mr-2" htmlFor={`number-${currentWeek}-${day}-${index}`}>Kilos:</span>
                               <Input
-                                type="number"
+                                type="text"
                                 id={`number-${currentWeek}-${day}-${index}`}
                                 className="w-20"
                               />
