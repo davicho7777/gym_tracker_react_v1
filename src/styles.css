@@ -367,3 +367,73 @@ body.tripi-mode button:active {
   object-fit: cover;
   opacity: 0.7; /* Ajusta la opacidad para que no opaque completamente el contenido */
 }
+
+
+/* Estilos para pantallas de celulares */
+@media (max-width: 600px) {
+  /* Contenedor principal */
+  .container {
+    padding: 10px;
+  }
+
+  /* Botones */
+  button {
+    font-size: 0.875rem;
+    padding: 0.4em 0.8em;
+    width: 100%;
+  }
+
+  .button-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Tabla */
+  .table-container {
+    overflow-x: scroll;
+  }
+
+  .table {
+    min-width: 300px;
+  }
+
+  .table-header th,
+  .table-body td {
+    font-size: 0.875rem;
+    padding: 0.4rem;
+  }
+
+  /* Switch de modo oscuro */
+  .switch {
+    width: 30px;
+    height: 15px;
+  }
+
+  .slider {
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+  }
+
+  .slider:before {
+    left: 3px;
+    width: 12px;
+    height: 12px;
+  }
+
+  input:checked + .slider:before {
+    transform: translate(6px, 3px);
+  }
+}
+
+/* Estilos adicionales para botones en pantallas pequeñas */
+@media (max-width: 600px) {
+  .button-container .button {
+    margin-bottom: 10px;
+  }
+
+  .button-container .button:last-child {
+    margin-bottom: 0;
+  }
+}
