@@ -17,9 +17,9 @@ function getCurrentWeek() {
 
 const initialExercises = {
   [getCurrentWeek()]: {
-    day1: ["Press de Banca", "Fondos en Paralelas", "Elevaciones Laterales", "Extensiones de Tríceps"],
-    day2: ["Sentadilla", "Prensa", "Extensión cuadricep", "Elevación de Talones"],
-    day3: ["Dominadas", "Remo con Barra", "Pull-over", "Curl con Barra"]
+    day1: ["Press de Banca", "Press inclinada", "Fondo", "Press frances"],
+    day2: ["Dominadas", "Remo", "Curl bicep", "Curl inclinado"],
+    day3: ["Sentadillas", "Peso muerto", "Press militar", "Elevación lateral"]
   }
 };
 
