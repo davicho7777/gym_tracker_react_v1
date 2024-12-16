@@ -1,49 +1,42 @@
-// src/services/FirestoreService.js
 import { db, auth } from './firebase';
-import { collection, addDoc, getDocs, updateDoc, doc } from 'firebase/firestore';
+import { collection, addDoc, getDocs, updateDoc, doc, getDoc, setDoc } from 'firebase/firestore';
 
 export async function addWorkout(user, workoutData) {
-  if (!user || !user.uid) {
-    throw new Error('Usuario no autenticado');
-  }
-
-  try {
-    const workoutsCollection = collection(db, 'users', user.uid, 'workouts');
-    
-    // Check if a workout for this week already exists
-    const querySnapshot = await getDocs(workoutsCollection);
-    const existingWorkout = querySnapshot.docs.find(
-      doc => doc.data().week === workoutData.week
-    );
-
-    if (existingWorkout) {
-      // Update existing workout
-      await updateDoc(doc(db, 'users', user.uid, 'workouts', existingWorkout.id), workoutData);
-    } else {
-      // Create new workout
-      await addDoc(workoutsCollection, workoutData);
-    }
-  } catch (error) {
-    console.error('Error al agregar/actualizar workout:', error);
-    throw error;
-  }
+  const workoutsCollection = collection(db, 'users', user.uid, 'workouts');
+  await addDoc(workoutsCollection, workoutData);
 }
 
-export async function getExerciseNames(user) {
-  if (!user || !user.uid) {
-    throw new Error('Usuario no autenticado');
-  }
-  
+export async function getWorkouts(user) {
   const workoutsCollection = collection(db, 'users', user.uid, 'workouts');
   const querySnapshot = await getDocs(workoutsCollection);
-
-  // Extracting only the exercise names from each workout document
-  return querySnapshot.docs.map(doc => doc.data().exerciseName).filter(name => !!name);
+  return querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
-
-
 
 export async function updateWorkout(user, workoutId, updatedData) {
   const workoutRef = doc(db, 'users', user.uid, 'workouts', workoutId);
   await updateDoc(workoutRef, updatedData);
+}
+
+export async function getExerciseNames(user, week) {
+  try {
+    const exerciseNamesRef = doc(db, 'users', user.uid, 'exerciseNames', `week${week}`);
+    const docSnap = await getDoc(exerciseNamesRef);
+    
+    if (docSnap.exists()) {
+      return docSnap.data();
+    }
+    return null;
+  } catch (error) {
+    console.error('Error fetching exercise names:', error);
+    return null;
+  }
+}
+
+export async function saveExerciseNames(user, week, exercises) {
+  try {
+    const exerciseNamesRef = doc(db, 'users', user.uid, 'exerciseNames', `week${week}`);
+    await setDoc(exerciseNamesRef, exercises);
+  } catch (error) {
+    console.error('Error saving exercise names:', error);
+  }
 }
