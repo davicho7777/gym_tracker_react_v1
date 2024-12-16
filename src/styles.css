@@ -141,18 +141,6 @@ button:active {
   justify-content: center;
 }
 
-@media (max-width: 768px) {
-  .button-container {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  button {
-    font-size: 0.875rem;
-    padding: 0.4em 0.8em;
-  }
-}
-
 /* Tabla */
 .table-container {
   overflow-x: auto;
@@ -216,30 +204,18 @@ body.dark-mode .table-body tr:nth-child(odd) {
   background-color: #444;
 }
 
-@media (max-width: 768px) {
-  .table {
-    min-width: 100%;
-  }
-
-  .table-header th, 
-  .table-body td {
-    font-size: 0.875rem;
-    padding: 0.4rem;
-  }
-}
-
-/* Estilos para el switch de modo oscuro */
+/* Estilos del switch */
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 20px;
+  width: 52px;
+  height: 26px;
+  margin: 8px 0;
 }
 
 .switch input {
   opacity: 0;
   width: 0;
-  transform: translateY(-50%);
   height: 0;
 }
 
@@ -251,39 +227,32 @@ body.dark-mode .table-body tr:nth-child(odd) {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: 0.4s;
+  transition: .4s;
+  border-radius: 26px;
 }
 
 .slider:before {
-  transform: translateY(2px);
   position: absolute;
   content: "";
-  left: 5px;
-  width: 15px;
-  height: 15px;
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 3px;
   background-color: white;
-  transition: 0.2s;
+  transition: .4s;
+  border-radius: 50%;
 }
 
-input:checked +.slider {
+input:checked + .slider {
   background-color: #2196F3;
 }
 
-input:focus +.slider {
+input:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
 
-input:checked +.slider:before {
-  transform: translate(16px,2px);
-  
-}
-
-.slider.round {
-  border-radius: 20px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
+input:checked + .slider:before {
+  transform: translateX(24px);
 }
 
 /* Modo Tripi */
@@ -363,13 +332,35 @@ body.tripi-mode button:active {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; /* Asegura que la imagen esté detrás del contenido */
+  z-index: -1;
   object-fit: cover;
-  opacity: 0.7; /* Ajusta la opacidad para que no opaque completamente el contenido */
+  opacity: 0.7;
 }
 
+/* Media Queries para dispositivos móviles */
+@media (max-width: 768px) {
+  .button-container {
+    flex-direction: column;
+    align-items: center;
+  }
 
-/* Estilos para pantallas de celulares */
+  button {
+    font-size: 0.875rem;
+    padding: 0.4em 0.8em;
+  }
+
+  .table {
+    min-width: 100%;
+  }
+
+  .table-header th, 
+  .table-body td {
+    font-size: 0.875rem;
+    padding: 0.4rem;
+  }
+}
+
+/* Estilos específicos para móviles pequeños */
 @media (max-width: 600px) {
   /* Contenedor principal */
   .container {
@@ -388,6 +379,14 @@ body.tripi-mode button:active {
     align-items: stretch;
   }
 
+  .button-container .button {
+    margin-bottom: 10px;
+  }
+
+  .button-container .button:last-child {
+    margin-bottom: 0;
+  }
+
   /* Tabla */
   .table-container {
     overflow-x: scroll;
@@ -403,37 +402,48 @@ body.tripi-mode button:active {
     padding: 0.4rem;
   }
 
-  /* Switch de modo oscuro */
+  /* Switch optimizado para móvil */
   .switch {
-    width: 30px;
-    height: 15px;
-  }
-
-  .slider {
-    top: -2px;
-    left: -2px;
-    right: -2px;
-    bottom: -2px;
+    width: 44px;
+    height: 22px;
   }
 
   .slider:before {
-    left: 3px;
-    width: 12px;
-    height: 12px;
+    height: 16px;
+    width: 16px;
+    left: 1px;
+    bottom: 3px;
   }
 
   input:checked + .slider:before {
-    transform: translate(6px, 3px);
-  }
-}
-
-/* Estilos adicionales para botones en pantallas pequeñas */
-@media (max-width: 600px) {
-  .button-container .button {
-    margin-bottom: 10px;
+    transform: translateX(12px);
   }
 
-  .button-container .button:last-child {
-    margin-bottom: 0;
+  /* Mejoras para el modo tripi en móvil */
+  body.tripi-mode .switch .slider {
+    animation: tripiSwitch 5s infinite alternate;
+  }
+
+  @keyframes tripiSwitch {
+    0% { background-color: #ff00ff; }
+    25% { background-color: #00ffff; }
+    50% { background-color: #ffff00; }
+    75% { background-color: #ff0000; }
+    100% { background-color: #ff00ff; }
+  }
+
+  /* Mejorar la visibilidad del switch en modo oscuro */
+  body.dark-mode .switch .slider {
+    background-color: #555;
+  }
+
+  body.dark-mode .switch input:checked + .slider {
+    background-color: #3b82f6;
+  }
+
+  /* Feedback táctil */
+  .switch .slider:active:before {
+    width: 18px;
+    height: 18px;
   }
 }
