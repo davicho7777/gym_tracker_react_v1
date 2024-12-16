@@ -3,11 +3,21 @@ import Button from '../components/ui/button';
 import Input from '../components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table';
 import { Edit2, Check, X, Plus, Minus } from 'lucide-react';
-import { addWorkout } from '../services/FirestoreService';
+import { addWorkout, getExerciseNames, saveExerciseNames, getWorkouts, updateWorkout } from '../services/FirestoreService';
 import { auth } from '../services/firebase';
 import trippyGif from '../assets/images/trippygif.gif';
 
-const defaultExercises = ["Press de Banca", "Fondos en Paralelas", "Elevaciones Laterales", "Extensiones de Tríceps"];
+const getWeekDates = (week) => {
+  const currentYear = new Date().getFullYear();
+  const startDate = new Date(currentYear, 0, 1);
+  startDate.setDate(startDate.getDate() + (week - 1) * 7 - startDate.getDay());
+  const endDate = new Date(startDate);
+  endDate.setDate(startDate.getDate() + 6);
+
+  const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+  return `Del ${startDate.toLocaleDateString('es-ES', options)} al ${endDate.toLocaleDateString('es-ES', options)}`;
+};
+
 
 function getCurrentWeek() {
   const now = new Date();
@@ -23,32 +33,38 @@ const initialExercises = {
   }
 };
 
+const defaultExercises = ["Press de Banca", "Fondos en Paralelas", "Elevaciones Laterales", "Extensiones de Tríceps"];
+
 const RepCounter = ({ id, initialValue = 0 }) => {
-  const [count, setCount] = useState(initialValue);
+  const [count, setCount] = useState('0');
 
   useEffect(() => {
-    const savedCount = localStorage.getItem(id);
-    if (savedCount) setCount(savedCount);
-  }, [id]);
+    // Cargar el valor inicial desde localStorage
+    const savedValue = localStorage.getItem(id);
+    if (savedValue) {
+      setCount(savedValue);
+    } else {
+      setCount(initialValue.toString());
+      localStorage.setItem(id, initialValue.toString());
+    }
+  }, [id, initialValue]);
 
-  useEffect(() => {
-    localStorage.setItem(id, count);
-  }, [id, count]);
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    setCount(value);
+  const handleChange = (e) => {
+    const newValue = e.target.value;
+    setCount(newValue);
+    localStorage.setItem(id, newValue);
   };
 
   return (
     <Input
       type="text"
       value={count}
-      onChange={handleInputChange}
+      onChange={handleChange}
       className="w-20 text-center"
     />
   );
 };
+
 
 export default function WorkoutTracker() {
   const [currentWeek, setCurrentWeek] = useState(getCurrentWeek());
@@ -58,6 +74,7 @@ export default function WorkoutTracker() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isTripiMode, setIsTripiMode] = useState(false);
 
+  
   useEffect(() => {
     if (!exercises[currentWeek]) {
       setExercises(prev => ({
@@ -73,20 +90,9 @@ export default function WorkoutTracker() {
   }, [currentWeek, exercises]);
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add('dark-mode');
-    } else {
-      document.body.classList.remove('dark-mode');
-    }
-  }, [isDarkMode]);
-
-  useEffect(() => {
-    if (isTripiMode) {
-      document.body.classList.add('tripi-mode');
-    } else {
-      document.body.classList.remove('tripi-mode');
-    }
-  }, [isTripiMode]);
+    document.body.classList.toggle('dark-mode', isDarkMode);
+    document.body.classList.toggle('tripi-mode', isTripiMode);
+  }, [isDarkMode, isTripiMode]);
 
   const toggleDarkMode = () => {
     setIsDarkMode(prevMode => !prevMode);
@@ -96,8 +102,77 @@ export default function WorkoutTracker() {
     setIsTripiMode(prevMode => !prevMode);
   };
 
+  const loadFromCloud = async () => {
+    if (!auth.currentUser) {
+      alert('Debes iniciar sesión para cargar datos de la nube.');
+      return;
+    }
+  
+    try {
+      // Obtener todos los workouts del usuario
+      const workouts = await getWorkouts(auth.currentUser);
+      
+      // Buscar el workout de la semana actual
+      const currentWeekWorkout = workouts.find(w => w.week === currentWeek);
+      
+      if (!currentWeekWorkout) {
+        alert('No hay datos guardados para esta semana en la nube.');
+        return;
+      }
+  
+      // Cargar los datos en localStorage
+      Object.entries(currentWeekWorkout.days).forEach(([day, exercises]) => {
+        exercises.forEach((exercise, index) => {
+          // Guardar el peso
+          localStorage.setItem(
+            `number-${currentWeek}-${day}-${index}`,
+            exercise.weight.toString()
+          );
+  
+          // Guardar las repeticiones de cada set
+          exercise.sets.forEach((setData, setIndex) => {
+            const repValue = setData[`set${setIndex + 1}`].toString();
+            localStorage.setItem(
+              `reps-${currentWeek}-${day}-${index}-set${setIndex + 1}`,
+              repValue
+            );
+          });
+  
+          // Guardar el nombre del ejercicio
+          localStorage.setItem(
+            `exercise-${currentWeek}-${day}-${index}`,
+            exercise.name
+          );
+        });
+      });
+  
+      // Obtener y cargar los nombres de ejercicios
+      const exerciseNames = await getExerciseNames(auth.currentUser, currentWeek);
+      if (exerciseNames) {
+        setExercises(prev => ({
+         ...prev,
+          [currentWeek]: exerciseNames
+        }));
+      }
+  
+      // Restaurar los inputs con los nuevos datos
+      restoreInputs();
+      
+      alert('Datos cargados con éxito desde la nube.');
+    } catch (error) {
+      console.error('Error loading data from cloud:', error);
+      alert('Error al cargar datos de la nube.');
+    }
+  };
+
+
   const addDay = () => {
     const currentDays = Object.keys(exercises[currentWeek] || {});
+    if (currentDays.length >= 7) {
+      alert('No se pueden añadir más de 7 días en una semana');
+      return;
+    }
+    
     const newDayNumber = currentDays.length + 1;
     const newDayKey = `day${newDayNumber}`;
 
@@ -125,16 +200,7 @@ export default function WorkoutTracker() {
     }));
   };
 
-  const getWeekDates = (week) => {
-    const currentYear = new Date().getFullYear();
-    const startDate = new Date(currentYear, 0, 1);
-    startDate.setDate(startDate.getDate() + (week - 1) * 7 - startDate.getDay());
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-
-    const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    return `Del ${startDate.toLocaleDateString('es-ES', options)} al ${endDate.toLocaleDateString('es-ES', options)}`;
-  };
+  
 
   const saveInputs = () => {
     document.querySelectorAll('input[type="text"]').forEach(numberInput => {
@@ -163,13 +229,13 @@ export default function WorkoutTracker() {
     }));
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
     saveInputs();
     const workoutData = {
       week: currentWeek,
       days: {}
     };
-
+  
     Object.keys(exercises[currentWeek] || {}).forEach(day => {
       const dayData = exercises[currentWeek][day].map((exercise, index) => {
         const reps = [1, 2, 3].map(set => {
@@ -185,16 +251,26 @@ export default function WorkoutTracker() {
       });
       workoutData.days[day] = dayData;
     });
-
+  
     if (auth.currentUser) {
-      addWorkout(auth.currentUser, workoutData)
-        .then(() => {
-          alert('Progreso guardado con éxito!');
-        })
-        .catch(error => {
-          console.error('Error saving workout:', error);
-          alert('Error al guardar el progreso.');
-        });
+      try {
+        // Obtener los datos del workout actual
+        const workouts = await getWorkouts(auth.currentUser);
+        const currentWeekWorkout = workouts.find(w => w.week === currentWeek);
+  
+        if (currentWeekWorkout) {
+          // Actualizar el workout existente
+          await updateWorkout(auth.currentUser, currentWeekWorkout.id, workoutData);
+        } else {
+          // Crear un nuevo workout
+          await addWorkout(auth.currentUser, workoutData);
+        }
+  
+        alert('Progreso guardado con éxito!');
+      } catch (error) {
+        console.error('Error saving workout:', error);
+        alert('Error al guardar el progreso.');
+      }
     } else {
       alert('Debes iniciar sesión para guardar el progreso.');
     }
@@ -298,7 +374,10 @@ export default function WorkoutTracker() {
       <h1 className="text-2xl font-bold text-center mb-4">Registro de Ejercicios Semanales</h1>
       <div className="flex flex-wrap justify-center items-center mb-4 gap-2">
         <Button onClick={() => setCurrentWeek(prev => prev > 1 ? prev - 1 : prev)}>Semana Anterior</Button>
-        <span className="mx-2 font-bold">Semana {currentWeek}</span>
+        <div className="text-center">
+          <div className="font-bold">Semana {currentWeek}</div>
+          <div className="text-sm text-gray-600">{getWeekDates(currentWeek)}</div>
+        </div>
         <Button onClick={() => setCurrentWeek(prev => prev + 1)}>Semana Siguiente</Button>
         <div className="flex items-center">
           <span className="mr-2">Modo Oscuro</span>
@@ -422,6 +501,7 @@ export default function WorkoutTracker() {
       <div className="flex justify-center items-center mt-4 gap-2">
         <Button onClick={handleSave}>Guardar Progreso</Button>
         <Button onClick={handlePrint}>Imprimir Datos</Button>
+        <Button onClick={loadFromCloud}>Cargar datos de la nube</Button>
       </div>
       {isTripiMode && (
         <img src={trippyGif} alt="Tripi Mode" className="trippy-gif" />
