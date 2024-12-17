@@ -240,13 +240,13 @@ export default function WorkoutTracker() {
       const dayData = exercises[currentWeek][day].map((exercise, index) => {
         const reps = [1, 2, 3].map(set => {
           const repValue = localStorage.getItem(`reps-${currentWeek}-${day}-${index}-set${set}`) || '0';
-          return { [`set${set}`]: parseFloat(repValue) || 0 };
+          return { [`set${set}`]: repValue || 0 };
         });
         const weight = localStorage.getItem(`number-${currentWeek}-${day}-${index}`) || '0';
         return {
           name: getExerciseName(day, index),
           sets: reps,
-          weight: parseFloat(weight) || 0
+          weight: weight || 0
         };
       });
       workoutData.days[day] = dayData;
