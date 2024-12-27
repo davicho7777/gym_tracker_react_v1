@@ -6,6 +6,9 @@ import { Edit2, Check, X, Plus, Minus } from 'lucide-react';
 import { addWorkout, getExerciseNames, saveExerciseNames, getWorkouts, updateWorkout } from '../services/FirestoreService';
 import { auth } from '../services/firebase';
 import trippyGif from '../assets/images/trippygif.gif';
+import Sidebar from '../components/ui/Sidebar';
+
+
 
 const getWeekDates = (week) => {
   const currentYear = new Date().getFullYear();
@@ -39,7 +42,6 @@ const RepCounter = ({ id, initialValue = 0 }) => {
   const [count, setCount] = useState('0');
 
   useEffect(() => {
-    // Cargar el valor inicial desde localStorage
     const savedValue = localStorage.getItem(id);
     if (savedValue) {
       setCount(savedValue);
@@ -61,6 +63,7 @@ const RepCounter = ({ id, initialValue = 0 }) => {
       value={count}
       onChange={handleChange}
       className="w-20 text-center"
+      placeholder="0"
     />
   );
 };
@@ -172,7 +175,7 @@ export default function WorkoutTracker() {
       alert('No se pueden añadir más de 7 días en una semana');
       return;
     }
-    
+
     const newDayNumber = currentDays.length + 1;
     const newDayKey = `day${newDayNumber}`;
 
@@ -183,6 +186,7 @@ export default function WorkoutTracker() {
         [newDayKey]: [...defaultExercises]
       }
     }));
+    
   };
 
   const removeDay = () => {
@@ -208,12 +212,57 @@ export default function WorkoutTracker() {
     });
   };
 
-  const restoreInputs = () => {
+  const restoreInputs = async () => {
+    // Primero intentamos restaurar desde localStorage
     document.querySelectorAll('input[type="text"]').forEach(numberInput => {
-      numberInput.value = localStorage.getItem(numberInput.id) || '';
+      const localValue = localStorage.getItem(numberInput.id);
+      if (localValue) {
+        numberInput.value = localValue;
+      }
     });
+  
+    // Si no hay usuario autenticado, no podemos buscar en Firebase
+    if (!auth.currentUser) return;
+  
+    try {
+      // Obtenemos los workouts del usuario
+      const workouts = await getWorkouts(auth.currentUser);
+      const currentWeekWorkout = workouts.find(w => w.week === currentWeek);
+  
+      if (!currentWeekWorkout) return;
+  
+      // Para cada input que no tenga valor en localStorage, intentamos obtenerlo de Firebase
+      document.querySelectorAll('input[type="text"]').forEach(input => {
+        if (!input.value) {
+          const [type, week, day, exerciseIndex, setNum] = input.id.split('-');
+          
+          // Si es un input de repeticiones
+          if (type === 'reps' && currentWeekWorkout.days[day]) {
+            const exercise = currentWeekWorkout.days[day][exerciseIndex];
+            if (exercise && exercise.sets) {
+              const setData = exercise.sets[parseInt(setNum.replace('set', '')) - 1];
+              if (setData) {
+                const repValue = setData[`set${setNum.replace('set', '')}`];
+                input.value = repValue;
+                localStorage.setItem(input.id, repValue);
+              }
+            }
+          }
+          
+          // Si es un input de peso (kilos)
+          else if (type === 'number' && currentWeekWorkout.days[day]) {
+            const exercise = currentWeekWorkout.days[day][exerciseIndex];
+            if (exercise) {
+              input.value = exercise.weight;
+              localStorage.setItem(input.id, exercise.weight);
+            }
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Error restoring data from Firebase:', error);
+    }
   };
-
   const getExerciseName = (day, index) => {
     return localStorage.getItem(`exercise-${currentWeek}-${day}-${index}`) || exercises[currentWeek][day][index];
   };
@@ -370,6 +419,12 @@ export default function WorkoutTracker() {
   };
 
   return (
+
+    <div className="flex h-screen">
+    {/* Sidebar fijo a la izquierda */}
+    <div className="w-64 flex-shrink-0 border-r">
+      <Sidebar />
+    </div>
     <div className="container mx-auto p-4">
       <h1 className="text-2xl font-bold text-center mb-4">Registro de Ejercicios Semanales</h1>
       <div className="flex flex-wrap justify-center items-center mb-4 gap-2">
@@ -506,6 +561,8 @@ export default function WorkoutTracker() {
       {isTripiMode && (
         <img src={trippyGif} alt="Tripi Mode" className="trippy-gif" />
       )}
+      
     </div>
+    </div> 
   );
 }
