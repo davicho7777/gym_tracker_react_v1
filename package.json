@@ -11,13 +11,17 @@
   },
   "dependencies": {
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
+    "chart.js": "^4.4.7",
+    "clsx": "^2.1.1",
     "firebase": "^10.14.1",
     "lucide-react": "^0.241.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.0.1",
-    "react-scripts": "5.0.1"
+    "react-scripts": "5.0.1",
+    "tailwind-merge": "^2.6.0"
   },
   "eslintConfig": {
     "extends": [
