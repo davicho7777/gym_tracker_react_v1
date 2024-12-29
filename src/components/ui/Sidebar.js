@@ -27,7 +27,7 @@ const SidebarMenu = () => {
           </li>
           <li className="mb-4">
             <Link to="/calendar" className="hover:text-gray-300">
-              <Button variant="outline">Calendario</Button>
+              <Button variant="outline">Calendario 📅</Button>
             </Link>
           </li>
           <li className="mb-4">
