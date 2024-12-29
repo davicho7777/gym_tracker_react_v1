@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import Button from './button'; // Asegúrate de importar el componente Button
 
 const SidebarMenu = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
