@@ -25,7 +25,8 @@ const getWeekDates = (week) => {
 function getCurrentWeek() {
   const now = new Date();
   const start = new Date(now.getFullYear(), 0, 1);
-  return Math.ceil(((now - start) / 86400000 + start.getDay() + 1) / 7);
+  const diff = (now - start + ((start.getDay() + 6) % 7) * 86400000) / 86400000;
+  return Math.ceil(diff / 7);
 }
 
 const initialExercises = {
@@ -115,8 +116,8 @@ export default function WorkoutTracker() {
       // Obtener todos los workouts del usuario
       const workouts = await getWorkouts(auth.currentUser);
       
-      // Buscar el workout de la semana actual
-      const currentWeekWorkout = workouts.find(w => w.week === currentWeek);
+      // Buscar el workout de la semana y año actual
+      const currentWeekWorkout = workouts.find(w => w.week === currentWeek && w.year === new Date().getFullYear());
       
       if (!currentWeekWorkout) {
         alert('No hay datos guardados para esta semana en la nube.');
@@ -282,6 +283,7 @@ export default function WorkoutTracker() {
     saveInputs();
     const workoutData = {
       week: currentWeek,
+      year: new Date().getFullYear(),
       days: {}
     };
   
@@ -305,7 +307,7 @@ export default function WorkoutTracker() {
       try {
         // Obtener los datos del workout actual
         const workouts = await getWorkouts(auth.currentUser);
-        const currentWeekWorkout = workouts.find(w => w.week === currentWeek);
+        const currentWeekWorkout = workouts.find(w => w.week === currentWeek && w.year === new Date().getFullYear());
   
         if (currentWeekWorkout) {
           // Actualizar el workout existente
