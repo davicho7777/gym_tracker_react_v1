@@ -6,7 +6,7 @@ import { Edit2, Check, X, Plus, Minus } from 'lucide-react';
 import { addWorkout, getExerciseNames, saveExerciseNames, getWorkouts, updateWorkout } from '../services/FirestoreService';
 import { auth } from '../services/firebase';
 import trippyGif from '../assets/images/trippygif.gif';
-import Sidebar from '../components/ui/Sidebar';
+import SidebarMenu from '../components/ui/Sidebar';
 
 
 
@@ -421,148 +421,146 @@ export default function WorkoutTracker() {
   return (
 
     <div className="flex h-screen">
-    {/* Sidebar fijo a la izquierda */}
-    <div className="w-64 flex-shrink-0 border-r">
-      <Sidebar />
-    </div>
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold text-center mb-4">Registro de Ejercicios Semanales</h1>
-      <div className="flex flex-wrap justify-center items-center mb-4 gap-2">
-        <Button onClick={() => setCurrentWeek(prev => prev > 1 ? prev - 1 : prev)}>Semana Anterior</Button>
-        <div className="text-center">
-          <div className="font-bold">Semana {currentWeek}</div>
-          <div className="text-sm text-gray-600">{getWeekDates(currentWeek)}</div>
+      {/* Sidebar fijo a la izquierda */}
+      <SidebarMenu />
+      <div className="container mx-auto p-4">
+        <h1 className="text-2xl font-bold text-center mb-4">Registro de Ejercicios Semanales</h1>
+        <div className="flex flex-wrap justify-center items-center mb-4 gap-2">
+          <Button onClick={() => setCurrentWeek(prev => prev > 1 ? prev - 1 : prev)}>Semana Anterior</Button>
+          <div className="text-center">
+            <div className="font-bold">Semana {currentWeek}</div>
+            <div className="text-sm text-gray-600">{getWeekDates(currentWeek)}</div>
+          </div>
+          <Button onClick={() => setCurrentWeek(prev => prev + 1)}>Semana Siguiente</Button>
+          <div className="flex items-center">
+            <span className="mr-2">Modo Oscuro</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={isDarkMode}
+                onChange={toggleDarkMode}
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-2">Modo Tripi</span>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={isTripiMode}
+                onChange={toggleTripiMode}
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
         </div>
-        <Button onClick={() => setCurrentWeek(prev => prev + 1)}>Semana Siguiente</Button>
-        <div className="flex items-center">
-          <span className="mr-2">Modo Oscuro</span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isDarkMode}
-              onChange={toggleDarkMode}
-            />
-            <span className="slider round"></span>
-          </label>
+        <div className="flex justify-center items-center mb-4 gap-2">
+          <Button onClick={removeDay} variant="outline">
+            <Minus className="h-4 w-4 mr-2" />
+            Quitar Día
+          </Button>
+          <Button onClick={addDay} variant="outline">
+            <Plus className="h-4 w-4 mr-2" />
+            Añadir Día
+          </Button>
         </div>
-        <div className="flex items-center">
-          <span className="mr-2">Modo Tripi</span>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={isTripiMode}
-              onChange={toggleTripiMode}
-            />
-            <span className="slider round"></span>
-          </label>
-        </div>
-      </div>
-      <div className="flex justify-center items-center mb-4 gap-2">
-        <Button onClick={removeDay} variant="outline">
-          <Minus className="h-4 w-4 mr-2" />
-          Quitar Día
-        </Button>
-        <Button onClick={addDay} variant="outline">
-          <Plus className="h-4 w-4 mr-2" />
-          Añadir Día
-        </Button>
-      </div>
-      <div className="overflow-x-auto">
-        <Table className="table w-full">
-          <TableHeader className="table-header">
-            <TableRow>
-              {Object.keys(exercises[currentWeek] || {}).map(day => (
-                <TableHead key={day} className="table-header-th">
-                  {day}
-                </TableHead>
-              ))}
-            </TableRow>
-          </TableHeader>
-          <TableBody className="table-body">
-            <TableRow>
-              {Object.keys(exercises[currentWeek] || {}).map(day => (
-                <TableCell key={day} className="table-body-td">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="mr-2">Ejercicios: {exercises[currentWeek][day].length}</span>
-                    <div className="flex items-center">
-                      <Button size="icon" variant="outline" onClick={() => handleExerciseCountChange(day, exercises[currentWeek][day].length - 1)}>
-                        <Minus className="h-4 w-4" />
-                      </Button>
-                      <Button size="icon" variant="outline" onClick={() => handleExerciseCountChange(day, exercises[currentWeek][day].length + 1)}>
-                        <Plus className="h-4 w-4" />
-                      </Button>
+        <div className="overflow-x-auto">
+          <Table className="table w-full">
+            <TableHeader className="table-header">
+              <TableRow>
+                {Object.keys(exercises[currentWeek] || {}).map(day => (
+                  <TableHead key={day} className="table-header-th">
+                    {day}
+                  </TableHead>
+                ))}
+              </TableRow>
+            </TableHeader>
+            <TableBody className="table-body">
+              <TableRow>
+                {Object.keys(exercises[currentWeek] || {}).map(day => (
+                  <TableCell key={day} className="table-body-td">
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="mr-2">Ejercicios: {exercises[currentWeek][day].length}</span>
+                      <div className="flex items-center">
+                        <Button size="icon" variant="outline" onClick={() => handleExerciseCountChange(day, exercises[currentWeek][day].length - 1)}>
+                          <Minus className="h-4 w-4" />
+                        </Button>
+                        <Button size="icon" variant="outline" onClick={() => handleExerciseCountChange(day, exercises[currentWeek][day].length + 1)}>
+                          <Plus className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <Table className="table w-full">
-                      <TableBody className="table-body">
-                        {exercises[currentWeek][day].map((exercise, index) => (
-                          <TableRow key={`${day}-${index}`} className="table-body-tr">
-                            <TableCell className="table-body-td">
-                              <div className="flex flex-wrap items-center mb-2 gap-2">
-                                {editingExercise.day === day && editingExercise.index === index ? (
-                                  <>
-                                    <Input
-                                      value={newExerciseName}
-                                      onChange={(e) => setNewExerciseName(e.target.value)}
-                                      className="flex-grow"
-                                    />
-                                    <div>
-                                      <Button size="icon" variant="ghost" onClick={saveNewExerciseName} className="mr-1">
-                                        <Check className="h-4 w-4" />
+                    <div className="overflow-x-auto">
+                      <Table className="table w-full">
+                        <TableBody className="table-body">
+                          {exercises[currentWeek][day].map((exercise, index) => (
+                            <TableRow key={`${day}-${index}`} className="table-body-tr">
+                              <TableCell className="table-body-td">
+                                <div className="flex flex-wrap items-center mb-2 gap-2">
+                                  {editingExercise.day === day && editingExercise.index === index ? (
+                                    <>
+                                      <Input
+                                        value={newExerciseName}
+                                        onChange={(e) => setNewExerciseName(e.target.value)}
+                                        className="flex-grow"
+                                      />
+                                      <div>
+                                        <Button size="icon" variant="ghost" onClick={saveNewExerciseName} className="mr-1">
+                                          <Check className="h-4 w-4" />
+                                        </Button>
+                                        <Button size="icon" variant="ghost" onClick={cancelEditing}>
+                                          <X className="h-4 w-4" />
+                                        </Button>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <span className="font-medium">{getExerciseName(day, index)}</span>
+                                      <Button size="icon" variant="ghost" onClick={() => startEditing(day, index)}>
+                                        <Edit2 className="h-4 w-4" />
                                       </Button>
-                                      <Button size="icon" variant="ghost" onClick={cancelEditing}>
-                                        <X className="h-4 w-4" />
-                                      </Button>
+                                    </>
+                                  )}
+                                </div>
+                                <div className="space-y-2">
+                                  {[1, 2, 3].map(set => (
+                                    <div key={`${day}-${index}-set${set}`} className="flex items-center justify-between">
+                                      <span className="w-16">Set {set}:</span>
+                                      <RepCounter id={`reps-${currentWeek}-${day}-${index}-set${set}`} />
                                     </div>
-                                  </>
-                                ) : (
-                                  <>
-                                    <span className="font-medium">{getExerciseName(day, index)}</span>
-                                    <Button size="icon" variant="ghost" onClick={() => startEditing(day, index)}>
-                                      <Edit2 className="h-4 w-4" />
-                                    </Button>
-                                  </>
-                                )}
-                              </div>
-                              <div className="space-y-2">
-                                {[1, 2, 3].map(set => (
-                                  <div key={`${day}-${index}-set${set}`} className="flex items-center justify-between">
-                                    <span className="w-16">Set {set}:</span>
-                                    <RepCounter id={`reps-${currentWeek}-${day}-${index}-set${set}`} />
-                                  </div>
-                                ))}
-                              </div>
-                              <div className="mt-2 flex items-center justify-between">
-                                <span className="mr-2" htmlFor={`number-${currentWeek}-${day}-${index}`}>Kilos:</span>
-                                <Input
-                                  type="text"
-                                  id={`number-${currentWeek}-${day}-${index}`}
-                                  className="w-20"
-                                />
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableBody>
-        </Table>
+                                  ))}
+                                </div>
+                                <div className="mt-2 flex items-center justify-between">
+                                  <span className="mr-2" htmlFor={`number-${currentWeek}-${day}-${index}`}>Kilos:</span>
+                                  <Input
+                                    type="text"
+                                    id={`number-${currentWeek}-${day}-${index}`}
+                                    className="w-20"
+                                  />
+                                </div>
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </div>
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+        <div className="flex justify-center items-center mt-4 gap-2">
+          <Button onClick={handleSave}>Guardar Progreso</Button>
+          <Button onClick={handlePrint}>Imprimir Datos</Button>
+          <Button onClick={loadFromCloud}>Cargar datos de la nube</Button>
+        </div>
+        {isTripiMode && (
+          <img src={trippyGif} alt="Tripi Mode" className="trippy-gif" />
+        )}
+        
       </div>
-      <div className="flex justify-center items-center mt-4 gap-2">
-        <Button onClick={handleSave}>Guardar Progreso</Button>
-        <Button onClick={handlePrint}>Imprimir Datos</Button>
-        <Button onClick={loadFromCloud}>Cargar datos de la nube</Button>
-      </div>
-      {isTripiMode && (
-        <img src={trippyGif} alt="Tripi Mode" className="trippy-gif" />
-      )}
-      
-    </div>
     </div> 
   );
 }
