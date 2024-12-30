@@ -7,6 +7,7 @@ import { addWorkout, getExerciseNames, saveExerciseNames, getWorkouts, updateWor
 import { auth } from '../services/firebase';
 import trippyGif from '../assets/images/trippygif.gif';
 import SidebarMenu from '../components/ui/Sidebar';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -84,6 +85,7 @@ export default function WorkoutTracker() {
   const [newExerciseName, setNewExerciseName] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isTripiMode, setIsTripiMode] = useState(false);
+  const navigate = useNavigate();
 
   
   useEffect(() => {
@@ -331,6 +333,7 @@ export default function WorkoutTracker() {
       }
     } else {
       alert('Debes iniciar sesión para guardar el progreso.');
+      navigate('/login');
     }
   };
 
