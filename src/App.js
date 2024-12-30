@@ -20,16 +20,10 @@ function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/workout-tracker" element={<WorkoutTracker />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route 
-          path="/workout-tracker" 
-          element={
-            <ProtectedRoute>
-              <WorkoutTracker />
-            </ProtectedRoute>
-          } 
-        />
+
         <Route 
           path="/calendar" 
           element={
@@ -54,9 +48,9 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="/" element={<Login />} />
-        {/* Redirigir cualquier ruta no encontrada a login */}
-        <Route path="*" element={<Navigate to="/login" />} />
+        <Route path="/" element={<WorkoutTracker />} />
+        {/* Redirigir cualquier ruta no encontrada a workout-tracker */}
+        <Route path="*" element={<Navigate to="/workout-tracker" />} />
       </Routes>
     </Router>
   );
