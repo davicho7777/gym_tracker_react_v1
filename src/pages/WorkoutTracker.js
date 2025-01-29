@@ -10,9 +10,8 @@ import SidebarMenu from '../components/ui/Sidebar';
 
 
 
-const getWeekDates = (week) => {
-  const currentYear = new Date().getFullYear();
-  const startDate = new Date(currentYear, 0, 1);
+const getWeekDates = (week, year = new Date().getFullYear()) => {
+  const startDate = new Date(year, 0, 1);
   startDate.setDate(startDate.getDate() + (week - 1) * 7 - startDate.getDay());
   const endDate = new Date(startDate);
   endDate.setDate(startDate.getDate() + 6);
@@ -28,6 +27,13 @@ function getCurrentWeek() {
   const diff = (now - start + ((start.getDay() + 6) % 7) * 86400000) / 86400000;
   return Math.ceil(diff / 7);
 }
+
+// Add a new function to get the week number for a specific date
+const getWeekNumber = (date) => {
+  const start = new Date(date.getFullYear(), 0, 1);
+  const diff = (date - start + ((start.getDay() + 6) % 7) * 86400000) / 86400000;
+  return Math.ceil(diff / 7);
+};
 
 const initialExercises = {
   [getCurrentWeek()]: {
@@ -72,6 +78,7 @@ const RepCounter = ({ id, initialValue = 0 }) => {
 
 export default function WorkoutTracker() {
   const [currentWeek, setCurrentWeek] = useState(getCurrentWeek());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [exercises, setExercises] = useState(initialExercises);
   const [editingExercise, setEditingExercise] = useState({ day: '', index: -1 });
   const [newExerciseName, setNewExerciseName] = useState('');
@@ -91,7 +98,7 @@ export default function WorkoutTracker() {
       }));
     }
     restoreInputs();
-  }, [currentWeek, exercises]);
+  }, [currentWeek, currentYear, exercises]);
 
   useEffect(() => {
     document.body.classList.toggle('dark-mode', isDarkMode);
@@ -420,6 +427,26 @@ export default function WorkoutTracker() {
     }
   };
 
+  const handleNextWeek = () => {
+    setCurrentWeek(prev => {
+      if (prev === getWeekNumber(new Date(currentYear, 11, 31))) {
+        setCurrentYear(prevYear => prevYear + 1);
+        return 1;
+      }
+      return prev + 1;
+    });
+  };
+
+  const handlePreviousWeek = () => {
+    setCurrentWeek(prev => {
+      if (prev === 1) {
+        setCurrentYear(prevYear => prevYear - 1);
+        return getWeekNumber(new Date(currentYear - 1, 11, 31));
+      }
+      return prev - 1;
+    });
+  };
+
   return (
 
     <div className="flex h-screen">
@@ -428,12 +455,12 @@ export default function WorkoutTracker() {
       <div className="container mx-auto p-4">
         <h1 className="text-2xl font-bold text-center mb-4">Registro de Ejercicios Semanales</h1>
         <div className="flex flex-wrap justify-center items-center mb-4 gap-2">
-          <Button onClick={() => setCurrentWeek(prev => prev > 1 ? prev - 1 : prev)}>Semana Anterior</Button>
+          <Button onClick={handlePreviousWeek}>Semana Anterior</Button>
           <div className="text-center">
             <div className="font-bold">Semana {currentWeek}</div>
-            <div className="text-sm text-gray-600">{getWeekDates(currentWeek)}</div>
+            <div className="text-sm text-gray-600">{getWeekDates(currentWeek, currentYear)}</div>
           </div>
-          <Button onClick={() => setCurrentWeek(prev => prev + 1)}>Semana Siguiente</Button>
+          <Button onClick={handleNextWeek}>Semana Siguiente</Button>
           <div className="flex items-center">
             <span className="mr-2">Modo Oscuro</span>
             <label className="switch">
