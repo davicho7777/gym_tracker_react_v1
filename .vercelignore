@@ -1,0 +1,17 @@
+node_modules
+scripts
+src/**/__tests__
+coverage
+.git
+.vscode
+.idea
+*.log
+*.local
+README.md
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+/.vercel
+.vercel_build_output
+/.cache
+__tests__
