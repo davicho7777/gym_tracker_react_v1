@@ -9,7 +9,8 @@
     "postinstall": "node ./scripts/create-router-shim.js",
     "prepare": "husky install",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+  "test": "react-scripts test",
+  "test:ci": "cross-env CI=true react-scripts test --watchAll=false --runInBand",
     "lint": "eslint \"src/**/*.{js,jsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,jsx}\" --fix",
     "format": "prettier --write \"src/**/*.{js,jsx,css,json,md}\"",
@@ -50,8 +51,7 @@
   "lint-staged": {
     "src/**/*.{js,jsx}": [
       "npm run lint:fix",
-      "npm run format",
-      "git add"
+      "npm run format"
     ]
   },
   "devDependencies": {

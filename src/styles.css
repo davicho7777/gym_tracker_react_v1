@@ -8,10 +8,59 @@ body {
 }
 
 body.dark-mode {
-  background-color: #333;
-  color: #fff;
+  /* base: deep black/gray with warm red accents */
+  background-color: #080606;
+  color: #f8f0f0;
 }
 
+/* Compact mode: reduce button height/visual weight for lower page sections */
+.compact .btn {
+  font-size: 0.95rem;
+}
+.compact .btn--md {
+  padding: 0.34rem 0.8rem; /* smaller vertical padding */
+  border-radius: 6px;
+}
+.compact .btn--lg {
+  padding: 0.4rem 1rem;
+}
+.compact .btn--icon {
+  padding: 0.3rem; /* tighter icon buttons */
+}
+.compact .hero-action {
+  padding: 0.45rem 1rem; /* keep hero action a bit more prominent but still compact */
+}
+
+/* Centering helper for pages that should be centered inside the main area */
+.center-all {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1100px; /* constrain content so it looks centered on large screens */
+  margin: 0 auto;
+}
+.center-all .align-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+.center-all .table {
+  width: 100%;
+}
+
+/* Ghost edit buttons should illuminate gray on hover */
+.btn--ghost {
+  background: transparent;
+  color: inherit;
+}
+.btn--ghost:hover {
+  background: rgba(200, 200, 200, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
 /* Contenedor principal */
 .container {
   width: 90%;
@@ -101,19 +150,19 @@ button {
   width: auto;
   max-width: 100%;
   border-radius: 0.375rem;
-  border: 1px solid #d1d5db;
-  background-color: #6366f1;
+  border: 1px solid #3a0b0b;
+  background-color: #7f1d1d;
   color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #4f46e5;
+  background-color: #6b0f0f;
 }
 
 button:active {
-  background-color: #3b82f6;
+  background-color: #5b0b0b;
 }
 
 .dark-mode-button {
@@ -164,7 +213,7 @@ button:active {
 }
 
 .table-body td {
-  padding: 0.5rem;
+  padding: 0.35rem 0.4rem;
   border-top: 1px solid #e5e7eb;
   color: #333;
 }
@@ -179,29 +228,30 @@ button:active {
 
 /* Modo oscuro */
 body.dark-mode .table {
-  background-color: #444;
+  /* darker black-gray table surface */
+  background-color: #0b0606;
 }
 
 body.dark-mode .table-header {
-  background-color: #555;
-  color: #fff;
+  background-color: #0f0606;
+  color: #f6eaea;
 }
 
 body.dark-mode .table-header th {
-  color: #fff;
+  color: #f6eaea;
 }
 
 body.dark-mode .table-body td {
-  border-top: 1px solid #fff;
-  color: #fff;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  color: #f1eaea;
 }
 
 body.dark-mode .table-body tr:nth-child(even) {
-  background-color: #555;
+  background-color: #0b0606;
 }
 
 body.dark-mode .table-body tr:nth-child(odd) {
-  background-color: #444;
+  background-color: #080606;
 }
 
 /* Estilos del switch */
@@ -227,7 +277,7 @@ body.dark-mode .table-body tr:nth-child(odd) {
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 26px;
 }
 
@@ -239,16 +289,17 @@ body.dark-mode .table-body tr:nth-child(odd) {
   left: 4px;
   bottom: 3px;
   background-color: white;
-  transition: .4s;
+  transition: 0.4s;
   border-radius: 50%;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  /* warm red for checked state */
+  background-color: #7f1d1d;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px rgba(159, 23, 23, 0.9);
 }
 
 input:checked + .slider:before {
@@ -298,32 +349,478 @@ body.tripi-mode button:hover {
   background-color: #00ffff;
 }
 
+/* tripi-mode: keep day buttons styled by their theme-specific rules (no forced animation) */
+
+/* Vivid mode: colorful, inspired by the screenshot (purple background, white panels with black outline)
+   Buttons use vivid shadows already provided by btn--shadow-* utilities above. */
+body.vivid-mode {
+  background-color: #b07bff; /* light purple background similar to example */
+  color: #0b0b0b;
+}
+
+/* Make panels white with strong black outline like the screenshot */
+body.vivid-mode .card,
+body.vivid-mode .table,
+body.vivid-mode .table-header,
+body.vivid-mode .table-body td,
+body.vivid-mode .container {
+  background: #ffffff;
+  color: #0b0b0b;
+  border: 2px solid rgba(0, 0, 0, 0.85);
+  /* soften the hard black cast a bit for less aggression */
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.75);
+}
+
+/* Neo Brutalismo: ensure numeric input fields and rep pills are white and high-contrast */
+body.vivid-mode .exercise-card .input,
+body.vivid-mode .exercise-card input[type="text"],
+body.vivid-mode .exercise-card input[type="number"],
+body.vivid-mode .rep-pill,
+body.vivid-mode .w-20 {
+  background: #ffffff !important;
+  color: #000 !important;
+  border: 3px solid #000 !important;
+  box-shadow: none !important;
+}
+
+/* Make sure placeholder and text are dark in vivid mode inputs */
+body.vivid-mode .exercise-card .input::placeholder,
+body.vivid-mode .exercise-card input::placeholder {
+  color: #111 !important;
+  opacity: 1 !important;
+}
+
+/* Sidebar visuals for vivid / neo-brutalismo */
+body.vivid-mode .sidebar {
+  background: linear-gradient(180deg, #7a2be2, #4b0f7a);
+  color: #fff;
+  /* use a slightly softer right border so it doesn't feel like a heavy block */
+  border-right: 1px solid rgba(0, 0, 0, 0.65);
+  /* reduce the sidebar box-shadow for a lighter visual weight */
+  box-shadow: 1px 0 6px rgba(0, 0, 0, 0.45);
+}
+body.vivid-mode .sidebar .sidebar-title {
+  color: #fff;
+}
+body.vivid-mode .sidebar-btn {
+  background: #ffd600;
+  color: #000;
+  border: 2px solid rgba(0, 0, 0, 0.85);
+}
+
+/* Mini strip adjustments in vivid mode */
+body.vivid-mode .sidebar-mini {
+  background: linear-gradient(180deg, #8b5be6, #5a2b8a);
+  /* soften mini strip shadow */
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.72);
+}
+
+/* Show mini emojis in vivid mode (user requested emojis visible). Make them slightly larger for legibility */
+body.vivid-mode .mini-emoji {
+  display: inline-block !important;
+  font-size: 18px !important;
+  line-height: 1 !important;
+}
+
+/* Apply Neo-Brutalismo button look to mini items as well so the mini strip matches the sidebar */
+body.vivid-mode .sidebar-mini-item {
+  background: #ffd600 !important; /* bold yellow */
+  color: #000 !important;
+  border: 2px solid rgba(0, 0, 0, 0.9) !important;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.8) !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 6px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Make sure hamburger remains visible and consistent */
+body.vivid-mode .sidebar-mini-hamburger {
+  background: #000 !important;
+  border-radius: 8px !important;
+}
+body.vivid-mode .sidebar-mini-hamburger .hamburger-line {
+  background: #ffd600 !important;
+}
+
+/* Ensure main buttons show nice contrasting colors on vivid mode */
+body.vivid-mode .btn--primary {
+  background: #ffd600;
+  color: #000;
+  border: 3px solid #000;
+}
+body.vivid-mode .btn--neutral {
+  background: #3b82f6;
+  color: #fff;
+  border: 2px solid #000;
+}
+body.vivid-mode .btn--outline {
+  background: #10b981;
+  color: #fff;
+  border: 2px solid #000;
+}
+body.vivid-mode .btn--ghost {
+  background: transparent;
+  color: #000;
+  border: 2px solid #000;
+}
+
+/* Small badges (like the yellow time selectors in the screenshot) */
+.vivid-badge {
+  background: #ffd600;
+  color: #000;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  border: 3px solid #000;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.95);
+}
+
+/* Accessibility and contrast fixes for dark and tripi modes */
+body.dark-mode,
+body.tripi-mode {
+  /* Ensure general text is readable */
+  color: #e6e6e6;
+  background-color: #0b0b0b;
+}
+
+/* Buttons */
+body.dark-mode .btn,
+body.tripi-mode .btn {
+  color: #f3f4f6; /* light text */
+}
+body.dark-mode .btn--neutral,
+body.tripi-mode .btn--neutral {
+  background: #111827; /* neutral dark background */
+  color: #e6e6e6;
+  border-color: rgba(255, 255, 255, 0.06);
+}
+body.dark-mode .btn--outline,
+body.tripi-mode .btn--outline {
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+}
+body.dark-mode .btn--ghost,
+body.tripi-mode .btn--ghost {
+  color: #e6e6e6;
+}
+
+/* Improve visibility for small icon buttons (e.g. + / -) in dark and tripi modes */
+body.dark-mode .btn--icon,
+body.tripi-mode .btn--icon {
+  background: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+body.dark-mode .btn--icon:hover,
+body.tripi-mode .btn--icon:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+body.dark-mode .btn--icon svg,
+body.tripi-mode .btn--icon svg,
+body.dark-mode .btn--icon .lucide,
+body.tripi-mode .btn--icon .lucide {
+  stroke: currentColor;
+  color: inherit;
+}
+
+/* Ensure outline/icon variant is also visible */
+body.dark-mode .btn--outline.btn--icon,
+body.tripi-mode .btn--outline.btn--icon {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Inputs */
+body.dark-mode .input,
+body.tripi-mode .input {
+  background: #080606;
+  color: #f1eaea;
+  border-color: rgba(255, 255, 255, 0.04);
+}
+body.dark-mode .input::placeholder,
+body.tripi-mode .input::placeholder {
+  color: #9ca3af;
+}
+
+/* Tables and text areas */
+body.dark-mode .table,
+body.tripi-mode .table {
+  background-color: #0b0606;
+  color: #f1eaea;
+}
+body.dark-mode .table-header,
+body.tripi-mode .table-header {
+  background-color: #0f0606;
+  color: #f6eaea;
+}
+body.dark-mode .table-body td,
+body.tripi-mode .table-body td {
+  color: #f1eaea;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Make alternating rows dark variants for clearer separation */
+body.dark-mode .table-body tr:nth-child(even),
+body.tripi-mode .table-body tr:nth-child(even) {
+  background-color: #080606;
+}
+body.dark-mode .table-body tr:nth-child(odd),
+body.tripi-mode .table-body tr:nth-child(odd) {
+  background-color: #0b0606;
+}
+
+/* Cards */
+body.dark-mode .card,
+body.tripi-mode .card {
+  background: linear-gradient(180deg, #080606, #0b0606);
+  border-color: rgba(139, 0, 0, 0.06);
+  color: #f1eaea;
+}
+
+/* Utility text colors (override light-gray utilities) */
+body.dark-mode .text-gray-600,
+body.tripi-mode .text-gray-600 {
+  color: #9aa4b2 !important;
+}
+body.dark-mode .text-sm,
+body.tripi-mode .text-sm {
+  color: #cbd5e1;
+}
+
+/* Labels and small helper text */
+body.dark-mode label,
+body.tripi-mode label,
+body.dark-mode .font-medium,
+body.tripi-mode .font-medium {
+  color: #e6e6e6;
+}
+
+/* Mini strip & mini items background tweak for dark */
+body.dark-mode .sidebar-mini,
+body.tripi-mode .sidebar-mini {
+  background: linear-gradient(180deg, #17090a, #0f0505);
+}
+body.dark-mode .sidebar-mini-item,
+body.tripi-mode .sidebar-mini-item {
+  background: transparent;
+  color: #fff;
+}
+
+/* Ensure hamburger lines are visible */
+body.dark-mode .sidebar-mini-hamburger .hamburger-line,
+body.tripi-mode .sidebar-mini-hamburger .hamburger-line {
+  background: #fff;
+}
+
+/* Ensure input-like RepCounter pills contrast */
+body.dark-mode .rep-pill,
+body.tripi-mode .rep-pill {
+  background: #080606;
+  color: #f1eaea;
+}
+
+/* Force placeholders readable */
+body.dark-mode ::placeholder,
+body.tripi-mode ::placeholder {
+  color: #9aa4b2;
+  opacity: 1;
+}
+
+/* Sidebar overrides to ensure legibility */
+/* Sidebar - base dark overrides */
+body.dark-mode .sidebar {
+  background: linear-gradient(180deg, #2b0606, #170303);
+  color: #fff;
+}
+body.dark-mode .sidebar-btn {
+  color: #f3f4f6;
+  border-color: rgba(255, 255, 255, 0.04);
+}
+
+/* Tripi mode: make sidebar neon / psychedelic */
+body.tripi-mode .sidebar {
+  background: linear-gradient(90deg, #ff00ff 0%, #00ffff 50%, #ffff00 100%);
+  color: #000;
+  border-right: 2px solid rgba(0, 0, 0, 0.9);
+}
+body.tripi-mode .sidebar-btn {
+  color: #000;
+  background: rgba(255, 255, 255, 0.9);
+  border: 2px solid rgba(0, 0, 0, 0.95);
+}
+body.tripi-mode .sidebar-mini {
+  background: linear-gradient(180deg, #ff00ff, #00ffff);
+}
+body.tripi-mode .sidebar-mini-hamburger .hamburger-line {
+  background: #000;
+}
+
+/* Vivid / Neo Brutalismo: stronger sidebar overrides (will hide mini emojis) */
+body.vivid-mode .sidebar {
+  background: linear-gradient(180deg, #7a2be2, #4b0f7a);
+  color: #fff;
+  /* normalized thinner border (was 6px) */
+  border-right: 2px solid #000;
+}
+body.vivid-mode .sidebar-btn {
+  background: #ffd600;
+  color: #000;
+  border: 3px solid #000;
+}
+body.vivid-mode .sidebar-mini {
+  background: linear-gradient(180deg, #8b5be6, #5a2b8a);
+}
+body.vivid-mode .sidebar-mini-hamburger .hamburger-line {
+  background: #000;
+}
+
+/* In Neo Brutalismo (vivid-mode) make the week navigation buttons purple */
+body.vivid-mode .week-nav {
+  /* Neo-brutalismo: purple -> pink mix (púrpura mezclado con rosado) */
+  background: linear-gradient(180deg, #8a2be2 0%, #ff66b2 100%) !important;
+  color: #fff !important;
+  border: 3px solid rgba(0, 0, 0, 0.9) !important;
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.85) !important;
+  text-shadow: 0 1px 0 rgba(0, 0, 0, 0.25);
+}
+body.vivid-mode .week-nav:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.9) !important;
+  filter: drop-shadow(
+    0 8px 18px rgba(255, 102, 178, 0.12)
+  ); /* subtle pink glow */
+}
+
+/* Make the day add/remove buttons visually match the small +/- icon buttons */
+.day-btn {
+  /* reuse outline-ish look but slightly stronger for text buttons */
+  background: linear-gradient(180deg, #ffffff, #f3f4f6) !important;
+  color: #111827 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.12) !important;
+  padding: 0.5rem 0.9rem !important;
+  border-radius: 0.9rem !important;
+  font-weight: 700 !important;
+}
+.day-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 10px 12px 0 rgba(0, 0, 0, 0.14) !important;
+}
+
+/* Make the edit-name buttons green to stand out */
+.edit-name-btn {
+  background: linear-gradient(
+    180deg,
+    #10b981,
+    #059669
+  ) !important; /* green gradient */
+  color: #fff !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 6px 16px rgba(4, 120, 87, 0.12) !important;
+}
+.edit-name-btn svg,
+.edit-name-btn .lucide {
+  stroke: currentColor !important;
+  color: #fff !important;
+}
+.edit-name-btn:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 26px rgba(4, 120, 87, 0.16) !important;
+}
+
+/* In Neo-Brutalismo (vivid-mode) make the add/remove-day buttons match the edit-name (green) */
+body.vivid-mode .day-btn {
+  background: linear-gradient(
+    180deg,
+    #10b981,
+    #059669
+  ) !important; /* same green gradient as edit-name */
+  color: #fff !important;
+  border: 2px solid rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 6px 8px 0 rgba(0, 0, 0, 0.85) !important;
+}
+body.vivid-mode .day-btn:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 14px 14px 0 rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Add a little more separation between exercise name and its edit button in vivid-mode */
+body.vivid-mode .exercise-card .flex {
+  gap: 0.75rem !important;
+}
+body.vivid-mode .exercise-card .flex .font-medium {
+  margin-right: 0.35rem !important;
+}
+
+/* Ensure hero action contrast remains good */
+body.dark-mode .hero-action,
+body.tripi-mode .hero-action {
+  box-shadow: 0 14px 40px rgba(127, 29, 29, 0.28);
+}
+
+/* Trippy GIF overlay: make it slightly transparent so text remains readable */
+body.tripi-mode .trippy-gif {
+  opacity: 0.45;
+}
+
 body.tripi-mode button:active {
   background-color: #ffff00;
 }
 
 @keyframes tripiBackground {
-  0% { background-color: black; }
-  25% { background-color: #ff00ff; }
-  50% { background-color: #00ffff; }
-  75% { background-color: #ffff00; }
-  100% { background-color: black; }
+  0% {
+    background-color: black;
+  }
+  25% {
+    background-color: #ff00ff;
+  }
+  50% {
+    background-color: #00ffff;
+  }
+  75% {
+    background-color: #ffff00;
+  }
+  100% {
+    background-color: black;
+  }
 }
 
 @keyframes tripiTable {
-  0% { background-color: black; }
-  25% { background-color: #ff00ff; }
-  50% { background-color: #00ffff; }
-  75% { background-color: #ffff00; }
-  100% { background-color: black; }
+  0% {
+    background-color: black;
+  }
+  25% {
+    background-color: #ff00ff;
+  }
+  50% {
+    background-color: #00ffff;
+  }
+  75% {
+    background-color: #ffff00;
+  }
+  100% {
+    background-color: black;
+  }
 }
 
 @keyframes tripiButton {
-  0% { background-color: #ff00ff; }
-  25% { background-color: #00ffff; }
-  50% { background-color: #ffff00; }
-  75% { background-color: #ff0000; }
-  100% { background-color: #ff00ff; }
+  0% {
+    background-color: #ff00ff;
+  }
+  25% {
+    background-color: #00ffff;
+  }
+  50% {
+    background-color: #ffff00;
+  }
+  75% {
+    background-color: #ff0000;
+  }
+  100% {
+    background-color: #ff00ff;
+  }
 }
 
 .trippy-gif {
@@ -353,7 +850,7 @@ body.tripi-mode button:active {
     min-width: 100%;
   }
 
-  .table-header th, 
+  .table-header th,
   .table-body td {
     font-size: 0.875rem;
     padding: 0.4rem;
@@ -425,20 +922,30 @@ body.tripi-mode button:active {
   }
 
   @keyframes tripiSwitch {
-    0% { background-color: #ff00ff; }
-    25% { background-color: #00ffff; }
-    50% { background-color: #ffff00; }
-    75% { background-color: #ff0000; }
-    100% { background-color: #ff00ff; }
+    0% {
+      background-color: #ff00ff;
+    }
+    25% {
+      background-color: #00ffff;
+    }
+    50% {
+      background-color: #ffff00;
+    }
+    75% {
+      background-color: #ff0000;
+    }
+    100% {
+      background-color: #ff00ff;
+    }
   }
 
   /* Mejorar la visibilidad del switch en modo oscuro */
   body.dark-mode .switch .slider {
-    background-color: #555;
+    background-color: #3b0f0f;
   }
 
   body.dark-mode .switch input:checked + .slider {
-    background-color: #3b82f6;
+    background-color: #9c1f1f;
   }
 
   /* Feedback táctil */
@@ -448,9 +955,816 @@ body.tripi-mode button:active {
   }
 }
 
+/* RESPONSIVE: mobile-first tweaks for sidebar, main content and exercise cards */
+@media (max-width: 768px) {
+  /* Sidebar becomes overlay: don't push content on small screens */
+  .main-with-sidebar {
+    margin-left: 0 !important;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 260px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    z-index: 220;
+    transition: transform 0.25s ease-in-out;
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  /* Hide mini-strip on small screens to avoid covering content */
+  .sidebar-mini {
+    display: none;
+  }
+
+  /* Overlay covers entire screen when sidebar is open */
+  .sidebar-overlay {
+    z-index: 210;
+  }
+
+  /* Make exercise cards full width and stack content */
+  .exercise-card {
+    padding: 0.6rem;
+    margin-bottom: 0.6rem;
+    border-radius: 10px;
+  }
+  .exercise-card .flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .exercise-card .space-y-2 > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  /* Buttons stack vertically and become full-width */
+  .button-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .button-container .btn {
+    width: 100%;
+  }
+
+  /* Make small action buttons less wide on mobile */
+  .btn--icon {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Table fallbacks: allow scrolling if necessary */
+  .table {
+    min-width: 600px;
+  }
+
+  /* Inputs stretch to available space */
+  .exercise-card .input,
+  .exercise-card input[type="time"],
+  .exercise-card input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* Reduce header spacing on small screens */
+  .center-all {
+    max-width: 100%;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  /* Very small phones: more compact paddings and fonts */
+  .btn {
+    padding: 0.45rem 0.6rem;
+    font-size: 0.92rem;
+  }
+  .btn--sm {
+    font-size: 0.85rem;
+    padding: 0.28rem 0.5rem;
+  }
+  .exercise-card {
+    padding: 0.5rem;
+  }
+  .table {
+    min-width: 480px;
+  }
+}
+
+/* When labels are NOT expanded (narrow or normal desktop), hide the full sidebar
+   and surface only floating emoji buttons. This makes the mini-strip operate as
+   an independent floating control without the heavy sidebar background. */
+@media (max-width: 1099px) {
+  /* hide the full sidebar visually and make it non-interactive */
+  .sidebar {
+    transform: translateX(-100%) !important;
+    width: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    box-shadow: none !important;
+  }
+
+  /* Ensure main content uses full width and leaves room for the floating strip */
+  .main-with-sidebar {
+    margin-left: 0 !important;
+    padding-left: 76px !important;
+  }
+
+  /* Make the mini strip a floating column of emoji buttons */
+  .sidebar-mini {
+    position: fixed !important;
+    left: 12px !important;
+    top: 12px !important;
+    width: auto !important;
+    height: auto !important;
+    padding-top: 0.8rem !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    z-index: 9999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: center !important;
+    pointer-events: auto !important;
+  }
+
+  /* Make thumbnails circular, subtle black outline removed/soft, and floating */
+  .sidebar-mini-item {
+    background: transparent !important;
+    border: none !important;
+    color: inherit !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22) !important;
+    transition: transform 0.18s ease, box-shadow 0.18s ease,
+      background 0.12s ease;
+    transform: translateY(0) !important;
+    backdrop-filter: blur(4px) !important;
+  }
+
+  /* Hide labels by default but allow hover reveal on portrait devices */
+  .sidebar-mini-item::after {
+    /* keep element available in DOM but invisible so hover can reveal it */
+    display: block !important;
+    opacity: 0 !important;
+    transform: translateY(-6px) translateX(-6px) scale(0.95) !important;
+    transition: opacity 0.18s ease, transform 0.18s ease !important;
+    pointer-events: none !important;
+  }
+
+  .sidebar-mini-item:hover {
+    transform: translateY(-12px) !important;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.32) !important;
+    z-index: 10001 !important;
+  }
+
+  /* Reveal labels on hover for portrait/vertical screens */
+  @media (orientation: portrait) and (max-width: 1099px) {
+    .sidebar-mini-item:hover::after,
+    .sidebar-mini-item:focus::after {
+      opacity: 1 !important;
+      transform: translateY(-50%) translateX(0) scale(1) !important;
+      left: 56px !important;
+      z-index: 10002 !important;
+    }
+  }
+
+  /* keep the hamburger visible but smaller and floating so it doesn't clash */
+  .sidebar-mini-hamburger {
+    position: fixed !important;
+    top: 12px !important;
+    left: 12px !important;
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 10px !important;
+    background: rgba(11, 6, 6, 0.8) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+    z-index: 10002 !important;
+  }
+}
+
 .container {
   padding-left: 1rem;
   padding-top: 1rem;
+}
+
+/* Sidebar styles */
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 240px;
+  background: linear-gradient(180deg, #2b0606, #170303);
+  color: #fff;
+  z-index: 60;
+  transform: translateX(0);
+  transition: transform 0.25s ease-in-out, width 0.25s ease-in-out;
+  box-shadow: 2px 0 8px rgba(2, 6, 23, 0.6);
+}
+.sidebar.closed {
+  transform: translateX(-260px);
+  width: 0;
+  overflow: hidden;
+}
+.sidebar.open {
+  transform: translateX(0);
+}
+.sidebar-toggle-fixed {
+  position: fixed;
+  top: 12px;
+  background: #0b0606;
+  color: #fff;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 60;
+}
+.sidebar-toggle-fixed:focus {
+  outline: 3px solid rgba(139, 0, 0, 0.18);
+}
+.sidebar-content {
+  padding: 3.5rem 1rem 1.5rem 1rem;
+}
+.sidebar-title {
+  font-size: 1.125rem;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+.sidebar-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.sidebar-btn {
+  width: 100%;
+  justify-content: flex-start;
+  background: transparent;
+  color: #e6eef8;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.sidebar-btn:hover {
+  background: rgba(255, 230, 230, 0.03);
+  color: #ffdcdc;
+}
+
+/* Overlay for mobile when sidebar is open */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 30;
+}
+
+/* Mini sidebar strip visible when collapsed */
+.sidebar-mini {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 56px;
+  background: linear-gradient(180deg, #2b0606, #170303);
+  z-index: 80; /* keep hamburger above expanded sidebar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* match the sidebar content top padding so items align vertically */
+  padding-top: 3.5rem;
+  gap: 12px;
+  box-shadow: 2px 0 8px rgba(2, 6, 23, 0.6);
+}
+.sidebar-mini {
+  transition: left 0.22s ease, transform 0.18s ease;
+}
+.sidebar-mini-hamburger {
+  background: transparent;
+  border: none;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+  align-items: center;
+  cursor: pointer;
+}
+.sidebar-mini-hamburger .hamburger-line {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+.sidebar-mini-hamburger.is-open {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 8px;
+}
+.sidebar-mini-hamburger.is-open .hamburger-line:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+.sidebar-mini-hamburger.is-open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.sidebar-mini-hamburger.is-open .hamburger-line:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+.sidebar-mini-hamburger .hamburger-line {
+  transition: transform 0.18s ease, opacity 0.12s ease;
+}
+.sidebar-mini-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  /* small top offset so mini icons visually align with sidebar list items */
+  margin-top: 0.5rem;
+}
+.sidebar-mini-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
+  transition: background 0.12s ease, transform 0.08s ease;
+}
+.sidebar-mini-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateY(-2px);
+}
+.sidebar-mini-item.active {
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.04);
+}
+
+/* Tooltip 'cloud' for mini icons on hover */
+.sidebar-mini-item {
+  position: relative;
+}
+.sidebar-mini-item::after {
+  content: attr(data-label);
+  position: absolute;
+  left: 56px;
+  top: 50%;
+  transform: translateY(-50%) translateX(-6px) scale(0.85);
+  background: rgba(11, 6, 6, 0.95);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 14px;
+  white-space: nowrap;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease, transform 0.12s ease;
+  font-size: 0.95rem;
+  z-index: 10000;
+}
+.sidebar-mini-item:hover::after,
+.sidebar-mini-item:focus::after {
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scale(1);
+}
+
+/* Auto-expand floating labels on larger screens: find equilibrium points */
+@media (min-width: 1100px) {
+  /* Show the tooltip labels by default (no hover needed) */
+  .sidebar-mini-item::after {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0) scale(1);
+    pointer-events: none; /* non-interactive overlay */
+    left: 68px; /* put the label slightly further from the icon */
+    font-size: 0.98rem;
+    padding: 8px 14px;
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+  }
+
+  /* When the mini strip is visible on wide screens, make the icons a bit more compact so labels breathe */
+  .sidebar-mini {
+    width: 72px;
+    padding-top: 3.8rem;
+  }
+  .sidebar-mini-item {
+    width: 44px;
+    height: 44px;
+  }
+}
+
+@media (min-width: 1400px) {
+  /* Larger screens: expand labels further (bigger text and more left offset) */
+  .sidebar-mini-item::after {
+    left: 90px;
+    font-size: 1rem;
+    padding: 10px 16px;
+    transform: translateY(-50%) translateX(0) scale(1.02);
+    box-shadow: 0 26px 60px rgba(0, 0, 0, 0.34);
+  }
+
+  /* Slightly raise thumbnails so they feel floating above content */
+  .sidebar-mini-item {
+    transform: translateY(-6px);
+  }
+  .sidebar-mini-item:hover {
+    transform: translateY(-14px) !important;
+  }
+}
+
+/* Slight left offset for right-to-left or edge cases */
+@media (max-width: 420px) {
+  .sidebar-mini-item::after {
+    left: 64px;
+  }
+}
+
+/* ensure the main content shifts when mini strip is present */
+.main-with-sidebar {
+  margin-left: 260px;
+}
+.sidebar.closed + .main-with-sidebar {
+  margin-left: 56px;
+}
+
+/* When the mini strip is present alongside an open sidebar, ensure it sits visually to the right and above */
+.sidebar.open ~ .sidebar-mini {
+  left: calc(240px + 8px) !important;
+}
+
+/* Ensure mini strip stays above the sidebar and is clickable */
+.sidebar-mini {
+  z-index: 120;
+  pointer-events: auto;
+}
+.sidebar {
+  z-index: 100;
+}
+
+/* Main content shift when sidebar open on larger screens */
+.main-with-sidebar {
+  margin-left: 260px;
+  transition: margin-left 0.25s ease-in-out;
+}
+
+/* Card styles for calendar */
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  border: 1px solid rgba(127, 29, 29, 0.12);
+  box-shadow: 0 1px 4px rgba(16, 24, 40, 0.05);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  text-align: left;
+}
+.card:hover,
+.card:focus {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 28px rgba(127, 29, 29, 0.12);
+}
+.card:focus {
+  outline: 3px solid rgba(139, 0, 0, 0.18);
+}
+.exercise-card {
+  background: linear-gradient(180deg, #ffffff, #fbfafb);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.05);
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    border-color 0.12s ease;
+}
+.exercise-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+}
+
+/* Ensure numeric inputs and small pills are always contained inside their parent
+   rectangle (exercise-card) regardless of theme. Important rules:
+   - child inputs can shrink inside flex containers (min-width:0)
+   - inputs use box-sizing and max-width so they don't overflow
+   - provide a safe max-width for .w-20 utility used in markup */
+.table-body-td,
+.exercise-card,
+.exercise-card .flex,
+.exercise-card .space-y-2 > div {
+  min-width: 0; /* allow children to shrink inside flex */
+}
+
+.input,
+input[type="text"],
+input[type="number"],
+.rep-pill {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Inputs inside exercise cards should be visually contained and centred. We keep a
+   conservative max-width to avoid overflow while allowing desktop layouts to use
+   wider inputs when needed. */
+.exercise-card .input,
+.exercise-card input[type="text"],
+.exercise-card input[type="number"] {
+  width: auto;
+  max-width: 100px;
+  min-width: 44px;
+  padding: 0.28rem 0.45rem;
+  border-radius: 6px;
+  text-align: center;
+  background: transparent;
+}
+
+/* Utility used in markup: constrain .w-20 so it never overflows its parent */
+.w-20 {
+  width: 5rem; /* ~80px */
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* On very small screens we allow inputs to expand to available space but still
+   be contained inside the card */
+@media (max-width: 600px) {
+  .exercise-card .input,
+  .exercise-card input[type="text"],
+  .exercise-card input[type="number"] {
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+/* Dark mode tweaks for exercise cards */
+body.dark-mode .exercise-card,
+body.tripi-mode .exercise-card {
+  background: linear-gradient(180deg, #0b0606, #080606);
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  color: #f1eaea;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+}
+
+/* Neo Brutalismo / vivid style for exercise cards */
+body.vivid-mode .exercise-card {
+  background: #ffd600;
+  border: 4px solid #000;
+  color: #000;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.85);
+}
+.card-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.25rem;
+}
+.card-sub {
+  color: #6b7280;
+  font-size: 0.9rem;
+}
+.card-meta {
+  margin-top: 0.5rem;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+/* Modern button system */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 1rem; /* softer rounded corners */
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.08); /* slightly stronger, softer blur */
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    background-color 0.12s ease;
+}
+
+.btn:active {
+  transform: translateY(1px) scale(0.997);
+}
+
+.btn--primary {
+  background: linear-gradient(180deg, #cc1f1f, #7f1d1d);
+  color: white;
+  border: none;
+}
+.btn--primary:hover {
+  box-shadow: 0 18px 46px rgba(127, 29, 29, 0.18);
+  transform: translateY(-2px);
+}
+
+.btn--neutral {
+  background: linear-gradient(180deg, #ffffff, #f3f4f6);
+  color: #111827;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+.btn--ghost {
+  background: transparent;
+  color: #374151;
+  border: 1px dashed rgba(0, 0, 0, 0.06);
+}
+.btn--outline {
+  background: linear-gradient(180deg, #ffffff, #fff7f7);
+  border: 1px solid rgba(127, 29, 29, 0.12);
+  color: #7f1d1d;
+}
+.btn--outline:hover {
+  background: linear-gradient(180deg, #fff1f1, #fff7f7);
+  color: #7f1d1d;
+  box-shadow: 0 10px 26px rgba(127, 29, 29, 0.1);
+  transform: translateY(-1px);
+}
+
+/* Button shadow types inspired by the attached design
+   - yellow: strong black offset + yellow glow (time selector style)
+   - blue: soft dark offset + blue glow (calendar style)
+   - green: soft dark offset + green glow (device style)
+   - black: simple black offset / outline for ghost buttons */
+.btn--shadow-yellow {
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.95),
+    0 10px 30px rgba(255, 235, 59, 0.12);
+  border: 2px solid rgba(0, 0, 0, 0.95);
+}
+.btn--shadow-blue {
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.85),
+    0 12px 28px rgba(59, 130, 246, 0.12);
+}
+.btn--shadow-green {
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.85),
+    0 12px 28px rgba(16, 185, 129, 0.12);
+}
+.btn--shadow-black {
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.85);
+}
+
+/* Make small buttons with shadows look tighter */
+.btn--sm.btn--shadow-yellow {
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.95), 0 8px 20px rgba(255, 235, 59, 0.1);
+}
+.btn--sm.btn--shadow-blue {
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.85), 0 8px 18px rgba(59, 130, 246, 0.1);
+}
+.btn--sm.btn--shadow-green {
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.85), 0 8px 18px rgba(16, 185, 129, 0.1);
+}
+.btn--sm.btn--shadow-black {
+  box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.9);
+}
+
+.btn--sm {
+  padding: 0.32rem 0.6rem;
+  font-size: 0.9rem;
+  border-radius: 0.8rem;
+}
+.btn--md {
+  padding: 0.55rem 1rem;
+  font-size: 1rem;
+}
+.btn--lg {
+  padding: 0.8rem 1.25rem;
+  font-size: 1.05rem;
+}
+.btn--icon {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+
+/* Active state helper for theme/unit buttons */
+.btn--active {
+  box-shadow: 0 14px 40px rgba(127, 29, 29, 0.18) !important;
+  transform: translateY(-3px);
+  outline: 3px solid rgba(255, 215, 0, 0.12);
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(139, 0, 0, 0.14);
+}
+
+/* Ensure SVG icons inherit color from button (lucide-react uses currentColor) */
+.btn svg {
+  color: inherit;
+  stroke: currentColor;
+}
+
+/* Smaller SVG size inside icon buttons */
+.btn--icon svg,
+.btn--icon .lucide {
+  width: 14px;
+  height: 14px;
+}
+
+/* Even smaller for ghost icon buttons (edit/confirm/cancel) */
+.btn--ghost.btn--icon {
+  width: 24px;
+  height: 24px;
+}
+.btn--ghost.btn--icon svg,
+.btn--ghost.btn--icon .lucide {
+  width: 12px;
+  height: 12px;
+}
+
+/* Align main content center while keeping tables full width */
+.main-with-sidebar {
+  margin-left: 260px;
+  transition: margin-left 0.25s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main-with-sidebar .overflow-x-auto {
+  width: 100%;
+}
+
+/* Inputs */
+.input {
+  border: 1px solid #e6eef8;
+  padding: 0.5rem 0.6rem;
+  border-radius: 0.5rem;
+  background: #fff;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+}
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 0 6px rgba(139, 0, 0, 0.08);
+  border-color: #7f1d1d;
+}
+
+/* Align buttons utility: center and group spacing */
+.align-buttons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Make sidebar buttons full width and left aligned content */
+.sidebar-btn {
+  width: 100%;
+  justify-content: flex-start;
+  padding-left: 1rem;
+}
+
+/* Strong visual header for important actions to be 'bruto' */
+.hero-action {
+  background: linear-gradient(90deg, #8b0000, #7f1d1d);
+  color: white;
+  box-shadow: 0 14px 40px rgba(127, 29, 29, 0.22);
+}
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .main-with-sidebar {
+    margin-left: 0; /* allow overlay behavior on smaller screens */
+  }
+  .sidebar {
+    width: 220px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-toggle {
+    right: -24px;
+    width: 40px;
+    height: 40px;
+  }
+  .sidebar {
+    width: 260px;
+    transform: translateX(-260px);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
 }
 
 /* Añadir estilos para la vista de calendario */
@@ -484,7 +1798,8 @@ body.tripi-mode button:active {
 }
 
 .hover\\:shadow-md:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .transition-shadow {
@@ -525,4 +1840,596 @@ body.tripi-mode button:active {
 
 .text-gray-700 {
   color: #374151;
+}
+
+/* ====================================================================== */
+/* Force dark/tripi surface overrides (placed at end so they win in cascade) */
+/* Ensures no white panels remain when body has .dark-mode or .tripi-mode */
+/* ====================================================================== */
+
+/* Default mode tweaks: remove/soften heavy shadows so UI looks flatter in default theme
+   This targets pages when body does NOT have any theme class (dark/tripi/vivid). */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) {
+  --shadow-small: 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-medium: 0 4px 12px rgba(15, 23, 42, 0.05);
+  /* darker brand reds for default theme */
+  --brand-red-top: #8a0f0f; /* top of gradients */
+  --brand-red-bottom: #5a0e0e; /* deeper/darker red */
+  --brand-red-accent: rgba(90, 14, 14, 0.14);
+}
+
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn {
+  box-shadow: var(--shadow-small) !important;
+}
+
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .card {
+  box-shadow: var(--shadow-small) !important;
+}
+
+/* Make non-primary (non-red) buttons more 3D and gray in default theme */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--neutral,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--ghost,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--outline {
+  background: linear-gradient(
+    180deg,
+    #f3f4f6,
+    #e6e9ee
+  ) !important; /* soft gray face */
+  color: #2f3440 !important; /* darker gray text */
+  border: 1px solid rgba(0, 0, 0, 0.14) !important;
+  box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  transform: translateZ(0);
+  border-radius: 0.6rem !important;
+}
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--neutral:hover,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--ghost:hover,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--outline:hover {
+  box-shadow: 10px 12px 0 rgba(0, 0, 0, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+  transform: translateY(-2px);
+}
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--neutral:active,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--ghost:active,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--outline:active {
+  box-shadow: 4px 6px 0 rgba(0, 0, 0, 0.12) inset !important;
+  transform: translateY(1px) !important;
+}
+
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-mini {
+  /* remove heavy sidebar shadows in default mode */
+  box-shadow: none !important;
+}
+
+/* Default theme: make rectangle borders more visible for clarity */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .exercise-card,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .card,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .table,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .table-header,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .table-body td,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .input,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .w-20,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .rep-pill {
+  border: 2px solid rgba(0, 0, 0, 0.18) !important;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06) !important;
+}
+
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .exercise-card {
+  background: linear-gradient(180deg, #ffffff, #fbfafb) !important;
+}
+
+/* Slightly stronger header cells in default theme */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .table-header th {
+  color: #111 !important;
+  font-weight: 700;
+}
+
+/* Highlight sidebar buttons in default theme: stronger surface, clear left accent and 3D lift */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-btn {
+  position: relative; /* for the left accent bar */
+  background: linear-gradient(180deg, #ffffff, #f7f3f3) !important;
+  color: #222222 !important;
+  border: 2px solid rgba(127, 29, 29, 0.14) !important;
+  /* stronger, slightly warmer shadow to give tactile elevation */
+  box-shadow: 10px 12px 0 rgba(127, 29, 29, 0.08) !important;
+  padding: 0.5rem 1.1rem 0.5rem 1.4rem !important; /* more left padding for accent */
+  font-weight: 800 !important;
+  font-size: 0.98rem !important;
+  border-radius: 0.65rem !important;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease;
+}
+
+/* decorative accent bar on the left of each sidebar button (default theme) */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-btn::before {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 14%;
+  bottom: 14%;
+  width: 4px;
+  border-radius: 4px;
+  background: rgba(127, 29, 29, 0.14);
+  box-shadow: 0 2px 6px rgba(127, 29, 29, 0.045) inset;
+  transition: all 0.12s ease;
+  opacity: 1;
+}
+
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-btn:hover {
+  transform: translateY(-4px) scale(1.01) !important;
+  box-shadow: 14px 16px 0 rgba(0, 0, 0, 0.12) !important; /* subtler, black-tinted lift */
+  background: linear-gradient(180deg, #fff6f6, #f7f3f3) !important;
+}
+
+/* Make active sidebar item even more visible with stronger accent and deeper shadow */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-btn.active {
+  background: linear-gradient(180deg, #fff2f2, #ffecec) !important;
+  color: #7f1d1d !important;
+  border-color: rgba(127, 29, 29, 0.32) !important;
+  box-shadow: 18px 20px 0 rgba(127, 29, 29, 0.14) !important;
+}
+
+/* Emphasize the accent bar for the active item */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode)
+  .sidebar-btn.active::before {
+  background: linear-gradient(
+    180deg,
+    var(--brand-red-top),
+    var(--brand-red-bottom)
+  );
+  width: 6px;
+  left: 8px;
+}
+
+/* Default-theme overrides: use darker reds for primary buttons and hero accents */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--primary {
+  background: linear-gradient(
+    180deg,
+    var(--brand-red-top),
+    var(--brand-red-bottom)
+  ) !important;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12) !important;
+}
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .hero-action {
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.14) !important;
+  background: linear-gradient(
+    90deg,
+    var(--brand-red-top),
+    var(--brand-red-bottom)
+  ) !important;
+}
+
+/* Give `.sidebar-btn` a subtle black delineation in default theme */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-btn {
+  border: 2px solid rgba(0, 0, 0, 0.12) !important; /* subtle black outline */
+  box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Reduce the big 'brutalist' shadow for mini items in default mode */
+/* Make mini-strip thumbnails feel 'flotantes' in default theme: subtle black outline, shadow and hover lift */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-mini-item {
+  position: relative;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  color: #222 !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important; /* subtle black delineado */
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.22) !important;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.12s ease;
+  backdrop-filter: blur(4px);
+}
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode)
+  .sidebar-mini-item:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.32) !important;
+  z-index: 220 !important;
+  background: linear-gradient(180deg, #ffffff, #fbfbfb) !important;
+}
+
+/* Add horizontal spacing for the mini-strip icons in default, dark and tripi themes */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .sidebar-mini-item,
+body.dark-mode .sidebar-mini-item,
+body.tripi-mode .sidebar-mini-item {
+  margin-right: 12px !important; /* space between icon and main content */
+}
+
+/* Soften special colored shadow utilities in default mode */
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--shadow-yellow,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--shadow-blue,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--shadow-green,
+body:not(.dark-mode):not(.tripi-mode):not(.vivid-mode) .btn--shadow-black {
+  box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.06) !important;
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+body.dark-mode .card,
+body.tripi-mode .card {
+  background: linear-gradient(180deg, #080606, #0b0606) !important;
+  border-color: rgba(139, 0, 0, 0.06) !important;
+  color: #f1eaea !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6) !important;
+}
+
+body.dark-mode .input,
+body.tripi-mode .input,
+body.dark-mode input,
+body.tripi-mode input,
+body.dark-mode textarea,
+body.tripi-mode textarea,
+body.dark-mode select,
+body.tripi-mode select {
+  /* align with the warm black-gray surfaces */
+  background: #080606 !important;
+  color: #f1eaea !important;
+  border-color: rgba(255, 255, 255, 0.04) !important;
+  box-shadow: none !important;
+}
+
+/* Utility class that forces white backgrounds in light theme */
+body.dark-mode .bg-white,
+body.tripi-mode .bg-white {
+  background-color: transparent !important;
+  background: linear-gradient(180deg, #080606, #0b0606) !important;
+  color: #f1eaea !important;
+  border-color: rgba(139, 0, 0, 0.06) !important;
+}
+
+/* Tables and table cells that may be defined later in file */
+body.dark-mode .table,
+body.tripi-mode .table,
+body.dark-mode .table-header,
+body.tripi-mode .table-header,
+body.dark-mode .table-body td,
+body.tripi-mode .table-body td,
+body.dark-mode .table-body tr,
+body.tripi-mode .table-body tr {
+  background: transparent !important;
+  color: #e6e6e6 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Neutral buttons (light gray) should be dark in dark mode */
+body.dark-mode .btn--neutral,
+body.tripi-mode .btn--neutral {
+  background: #1f2937 !important;
+  color: #e6e6e6 !important;
+  border-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Remove leftover light shadows that make panels look white */
+body.dark-mode .shadow-sm,
+body.tripi-mode .shadow-sm {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Ensure form placeholders and small helper text remain readable */
+body.dark-mode ::placeholder,
+body.tripi-mode ::placeholder {
+  color: #9aa4b2 !important;
+  opacity: 1 !important;
+}
+
+/* Final safety: make direct white-color literals not win */
+body.dark-mode [style*="background: #fff"],
+body.tripi-mode [style*="background: #fff"] {
+  background: transparent !important;
+}
+
+/* Final responsive safety overrides: ensure the mini sidebar does NOT cover content on
+   narrow screens (some tall phones can still render with large heights). These rules
+   are intentionally placed at the end to win over earlier declarations. */
+@media (max-width: 820px) {
+  /* On narrow viewports we keep a single visible hamburger for opening the
+     sidebar but hide the mini-links so the thin vertical strip doesn't overlap
+     page content (fixes very tall phone portrait cases). */
+
+  /* Keep the mini container but hide link icons and keep the hamburger visible */
+  .sidebar-mini {
+    display: flex !important;
+    position: fixed !important;
+    left: 8px !important;
+    top: 12px !important;
+    width: 56px !important;
+    height: auto !important;
+    padding-top: 0.5rem !important;
+    z-index: 260 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+
+  /* Hide the mini links but keep the hamburger button active */
+  /* Restore mini links/thumbs so the mini-strip is visible on small screens */
+  .sidebar-mini .sidebar-mini-links {
+    display: flex !important;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .sidebar-mini .sidebar-mini-item {
+    display: flex !important;
+  }
+
+  /* Ensure the hamburger remains visible and tappable */
+  .sidebar-mini-hamburger {
+    /* Make the hamburger float above everything and stay fixed while scrolling */
+    position: fixed !important;
+    top: 12px !important;
+    left: 12px !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 10px !important;
+    background: rgba(11, 6, 6, 0.9) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35) !important;
+    z-index: 9999 !important;
+    pointer-events: auto !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
+
+  /* Ensure main content uses full width and no left margin when sidebar is overlay */
+  .main-with-sidebar {
+    margin-left: 0 !important;
+    /* leave a small left padding so the fixed hamburger doesn't cover header controls */
+    padding-left: 64px !important;
+  }
+
+  /* Make sure any sibling rules that attempted to shift content for the mini strip
+     can't win back at this viewport width */
+  .sidebar.closed + .main-with-sidebar {
+    margin-left: 0 !important;
+  }
+
+  /* If sidebar is present, keep it as overlay and above content */
+  .sidebar {
+    position: fixed !important;
+    left: 0 !important;
+    top: 0 !important;
+    transform: translateX(-100%) !important;
+    width: 260px !important;
+    z-index: 240 !important;
+  }
+  .sidebar.open {
+    transform: translateX(0) !important;
+  }
+
+  /* Make sure overlay covers the page when sidebar opens */
+  .sidebar-overlay {
+    z-index: 230 !important;
+  }
+}
+
+/* Accessibility: focus-visible for floating hamburger */
+.sidebar-mini-hamburger:focus {
+  outline: 3px solid rgba(255, 255, 255, 0.12) !important;
+  box-shadow: 0 8px 28px rgba(127, 29, 29, 0.22) !important;
+}
+
+/* Dark-mode specific emphasis for portrait (vertical) screens */
+@media (orientation: portrait) {
+  /* Make sidebar buttons pop in dark mode on vertical screens */
+  body.dark-mode .sidebar-btn {
+    background: linear-gradient(
+      180deg,
+      #0f1113,
+      #070708
+    ) !important; /* deep warm black */
+    color: #fff !important;
+    border: 2px solid rgba(255, 255, 255, 0.06) !important;
+    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.6),
+      0 4px 12px rgba(139, 0, 0, 0.06) inset !important;
+    padding: 0.7rem 1.1rem !important;
+    font-weight: 800 !important;
+    border-radius: 0.6rem !important;
+    transform: translateZ(0);
+  }
+
+  body.dark-mode .sidebar-btn:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 26px 64px rgba(0, 0, 0, 0.75) !important;
+    background: linear-gradient(180deg, #17181a, #0b0b0c) !important;
+  }
+
+  /* Make add/remove day buttons much darker in dark mode for contrast */
+  body.dark-mode .day-btn {
+    background: linear-gradient(
+      180deg,
+      #060607,
+      #000000
+    ) !important; /* very dark */
+    color: #fff !important;
+    border: 1px solid rgba(255, 255, 255, 0.03) !important;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8) !important;
+    text-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+  }
+
+  body.dark-mode .day-btn:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.9) !important;
+    background: linear-gradient(180deg, #050506, #000000) !important;
+  }
+}
+
+/* Ensure sidebar buttons and mini thumbnails are more visible (grayer) in dark mode
+   so they don't disappear against very dark backgrounds. Applies generally, but
+   particularly useful on vertical mobile/portrait screens where contrast is low. */
+body.dark-mode .sidebar-btn {
+  background: linear-gradient(
+    180deg,
+    #2b2d2f,
+    #181818
+  ) !important; /* dark gray face */
+  color: #e6e6e6 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important; /* subtle light border */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02) !important;
+  padding: 0.6rem 1rem !important;
+}
+body.dark-mode .sidebar-btn:hover {
+  background: linear-gradient(180deg, #3a3c3f, #1b1b1b) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.72) !important;
+}
+
+/* Mini thumbnails: keep emojis visible but give them a light-gray circular surface */
+body.dark-mode .sidebar-mini-item {
+  background: rgba(255, 255, 255, 0.04) !important; /* faint gray surface */
+  color: #f1f1f1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6) !important;
+}
+body.dark-mode .sidebar-mini-item:hover {
+  background: rgba(255, 255, 255, 0.06) !important;
+  transform: translateY(-10px) !important;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.75) !important;
+}
+
+/* If the mini strip is floating on the left, ensure the icons sit comfortably separated */
+body.dark-mode .sidebar-mini {
+  padding-top: 3.6rem !important;
+  left: 8px !important;
+}
+
+/* Allow the mini-strip to receive pointer events so thumbnails are clickable */
+.sidebar-mini {
+  pointer-events: auto !important;
+}
+.sidebar-mini .sidebar-mini-hamburger {
+  pointer-events: auto !important;
+}
+
+/* Extra compacting for very tall portrait screens (long mobiles). This reduces
+   vertical spacing so users see more exercises without scrolling. Targets narrow
+   viewports with large heights (typical modern phones in portrait). */
+@media (max-width: 480px) and (min-height: 800px) {
+  /* Make cards tighter */
+  .exercise-card {
+    padding: 0.32rem !important;
+    margin-bottom: 0.32rem !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.04) !important;
+  }
+
+  /* Inputs smaller and more compact */
+  .exercise-card .input,
+  .exercise-card input[type="text"],
+  .exercise-card input[type="number"] {
+    padding: 0.18rem 0.35rem !important;
+    max-width: 84px !important;
+    min-width: 40px !important;
+    font-size: 0.92rem !important;
+  }
+
+  /* Table rows tighter */
+  .table-body td {
+    padding: 0.22rem 0.28rem !important;
+  }
+
+  /* Reduce gaps in stacked sets and controls */
+  .exercise-card .space-y-2 > div {
+    gap: 0.35rem !important;
+  }
+
+  /* Slightly reduce button sizes and spacing so actions fit in a line */
+  .button-container .btn {
+    padding: 0.36rem 0.6rem !important;
+    font-size: 0.95rem !important;
+  }
+  .btn--icon {
+    width: 28px !important;
+    height: 28px !important;
+  }
+
+  /* Reduce hero title size to fit header row */
+  .center-all h1,
+  .text-2xl {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* A second tier: slightly less aggressive compaction for medium tall phones */
+@media (max-width: 412px) and (min-height: 780px) {
+  .exercise-card {
+    padding: 0.36rem !important;
+    margin-bottom: 0.36rem !important;
+  }
+  .exercise-card .input {
+    padding: 0.2rem 0.38rem !important;
+    max-width: 92px !important;
+  }
+  .table-body td {
+    padding: 0.26rem 0.32rem !important;
+  }
+}
+
+/* Small-phone stacking: convert the day columns table into stacked full-width cards
+   so the layout fits narrow viewports (e.g. Samsung 412x915) without horizontal scroll. */
+@media (max-width: 420px) {
+  /* make the outer table behave like a block flow */
+  .table {
+    display: block !important;
+    min-width: 100% !important;
+  }
+
+  /* header row becomes a full-width heading row per day */
+  .table-header,
+  .table-header th,
+  .table-header .table-row,
+  .table-header .table-header-th {
+    display: block !important;
+    width: 100% !important;
+  }
+
+  /* Each day cell becomes its own block and full width */
+  .table-body,
+  .table-body tr,
+  .table-body .table-body-tr,
+  .table-body td,
+  .table-body .table-body-td {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Ensure nested inner tables inside each day behave correctly and are full width */
+  .table .table {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  /* Remove horizontal scrolling wrapper forcing overflow; let vertical stacking handle height */
+  .overflow-x-auto {
+    overflow-x: visible !important;
+  }
+
+  /* Make day cards full width so inputs and buttons wrap nicely */
+  .exercise-card {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Slightly increase input width for readability on tiny screens */
+  .exercise-card .input,
+  .exercise-card input[type="text"],
+  .w-20 {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    font-size: 1rem !important;
+    padding: 0.32rem 0.5rem !important;
+  }
+
+  /* Reduce header size and margins to fit the top area */
+  .center-all h1 {
+    font-size: 1.4rem !important;
+    margin-bottom: 0.4rem !important;
+  }
+  .align-buttons {
+    gap: 0.4rem !important;
+  }
 }

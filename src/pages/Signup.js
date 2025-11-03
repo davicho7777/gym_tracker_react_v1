@@ -1,33 +1,33 @@
 // src/pages/Signup.js
-import React, { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { signup } = useAuth();
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      setError('');
+      setError("");
       setLoading(true);
       await signup(email, password);
-      navigate('/workout-tracker');
+      navigate("/workout-tracker");
     } catch (error) {
-      console.error('Error signing up:', error);
-      if (error.code === 'auth/email-already-in-use') {
-        setError('Email already in use');
-      } else if (error.code === 'auth/invalid-email') {
-        setError('Invalid email address');
-      } else if (error.code === 'auth/weak-password') {
-        setError('Password should be at least 6 characters');
+      console.error("Error signing up:", error);
+      if (error.code === "auth/email-already-in-use") {
+        setError("Email already in use");
+      } else if (error.code === "auth/invalid-email") {
+        setError("Invalid email address");
+      } else if (error.code === "auth/weak-password") {
+        setError("Password should be at least 6 characters");
       } else {
-        setError('Failed to sign up');
+        setError("Failed to sign up");
       }
     }
     setLoading(false);
@@ -40,7 +40,12 @@ function Signup() {
         {error && <p className="text-red-500">{error}</p>}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 font-bold mb-2">Correo  </label>
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Correo{" "}
+            </label>
             <input
               type="email"
               id="email"
@@ -52,7 +57,12 @@ function Signup() {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-700 font-bold mb-2">Contraseña  </label>
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Contraseña{" "}
+            </label>
             <input
               type="password"
               id="password"
@@ -69,13 +79,16 @@ function Signup() {
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full"
               disabled={loading}
             >
-              {loading ? 'Loading...' : 'Sign Up'}
+              {loading ? "Loading..." : "Sign Up"}
             </button>
           </div>
         </form>
         <div className="mt-6 text-center">
           <p>
-            Ya tienes cuenta?? 👋<Link to="/login" className="text-blue-500">Log in</Link>
+            Ya tienes cuenta?? 👋
+            <Link to="/login" className="text-blue-500">
+              Log in
+            </Link>
           </p>
         </div>
       </div>

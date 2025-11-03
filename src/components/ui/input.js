@@ -1,7 +1,7 @@
-import React from 'react';
+import React from "react";
 
-const Input = ({ ...props }) => (
-  <input className="border border-gray-300 rounded p-2" {...props} />
+const Input = ({ className = "", ...props }) => (
+  <input className={`input ${className}`} {...props} />
 );
 
 export default Input;

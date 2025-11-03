@@ -1,37 +1,51 @@
-import React from 'react';
+import React, { useContext } from "react";
 import { cn } from "../../lib/utils";
+import SettingsContext from "../../context/SettingsContext";
 
-const Button = ({ 
-  children, 
-  variant = "default", 
-  size = "default",
+const Button = ({
+  children,
+  variant, // if not provided, choose based on theme
+  size = "md",
   className,
-  ...props 
+  ...props
 }) => {
-  const baseStyles = "inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
-  
+  // useContext directly so Button can be used outside of a SettingsProvider in tests
+  const ctx = useContext(SettingsContext);
+  const theme = (ctx && ctx.theme) || "default";
+  // choose a sensible default variant per theme when none provided
+  const defaultVariantByTheme = {
+    default: "primary",
+    dark: "neutral",
+    tripi: "ghost",
+    vivid: "outline",
+  };
+  const resolvedVariant = variant || defaultVariantByTheme[theme] || "primary";
+  const base =
+    "btn inline-flex items-center justify-center rounded-lg font-semibold transition transform-gpu focus-visible:outline-none disabled:opacity-60 disabled:cursor-not-allowed";
+
   const variants = {
-    default: "bg-blue-500 hover:bg-blue-700 text-white",
-    secondary: "bg-gray-100 hover:bg-gray-200 text-gray-900",
-    ghost: "hover:bg-gray-100 hover:text-gray-900",
-    outline: "border border-gray-200 hover:bg-gray-100 hover:text-gray-900",
+    primary: "btn--primary text-white btn--shadow-yellow",
+    neutral: "btn--neutral text-gray-800 btn--shadow-blue",
+    ghost: "btn--ghost text-gray-800 btn--shadow-black",
+    outline: "btn--outline text-gray-800 btn--shadow-green",
   };
 
   const sizes = {
-    default: "h-10 px-4 py-2",
-    sm: "h-8 px-3 text-sm",
-    lg: "h-12 px-6",
-    icon: "h-10 w-10",
+    sm: "btn--sm",
+    md: "btn--md",
+    lg: "btn--lg",
+    icon: "btn--icon",
   };
 
   return (
     <button
       className={cn(
-        baseStyles,
-        variants[variant],
-        sizes[size],
+        base,
+        variants[resolvedVariant] || variants.primary,
+        sizes[size] || sizes.md,
         className
       )}
+      data-theme={theme}
       {...props}
     >
       {children}
