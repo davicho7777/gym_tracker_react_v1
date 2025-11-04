@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start": "react-scripts start",
-    "vercel-build": "npm run build",
-    "prepare": "husky install",
+  "vercel-build": "npm run build",
+  "prepare": "node ./scripts/guarded-husky-install.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test --watchAll=false --runInBand",
