@@ -6,7 +6,7 @@
   "scripts": {
     "start": "react-scripts start",
   "vercel-build": "npm run build",
-  "prepare": "node ./scripts/guarded-husky-install.js",
+  "prepare": "node ./ci/guarded-husky-install.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "cross-env CI=true react-scripts test --watchAll=false --runInBand",
