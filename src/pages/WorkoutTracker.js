@@ -67,7 +67,7 @@ const defaultExercises = [
   "Extensiones de Tríceps",
 ];
 
-const RepCounter = ({ id, initialValue = 0 }) => {
+const RepCounter = ({ id, initialValue = 0, reloadKey }) => {
   const [count, setCount] = useState("0");
 
   useEffect(() => {
@@ -93,6 +93,7 @@ const RepCounter = ({ id, initialValue = 0 }) => {
       onChange={handleChange}
       className="w-20 text-center"
       placeholder="0"
+      key={reloadKey}
     />
   );
 };
@@ -110,6 +111,8 @@ export default function WorkoutTracker() {
   // use theme and units from SettingsContext
   const { theme, setTheme, units } = useSettings();
   const navigate = useNavigate();
+  // Estado para forzar rerender de RepCounter
+  const [reloadKey, setReloadKey] = useState(0);
   // responsive width detection to switch to stacked mobile layout
   const [windowWidth, setWindowWidth] = useState(
     typeof window !== "undefined" ? window.innerWidth : 1024
@@ -308,7 +311,9 @@ export default function WorkoutTracker() {
           );
         });
       });
-      setWeights(newWeights);
+
+  setWeights(newWeights);
+  setReloadKey((k) => k + 1); // fuerza rerender de RepCounter
 
       // Obtener y cargar los nombres de ejercicios
       const exerciseNames = await getExerciseNames(
@@ -322,10 +327,11 @@ export default function WorkoutTracker() {
         }));
       }
 
-      // Restaurar los inputs con los nuevos datos
-      restoreInputs();
+  // Restaurar los inputs con los nuevos datos
+  await restoreInputs();
+  setReloadKey((k) => k + 1); // fuerza rerender de RepCounter después de restaurar reps
 
-      alert("Datos cargados con éxito desde la nube.");
+  alert("Datos cargados con éxito desde la nube.");
     } catch (error) {
       console.error("Error loading data from cloud:", error);
       alert("Error al cargar datos de la nube.");
@@ -723,6 +729,7 @@ export default function WorkoutTracker() {
                                 <span className="w-16">Set {set}:</span>
                                 <RepCounter
                                   id={`reps-${currentWeek}-${day}-${index}-set${set}`}
+                                  reloadKey={reloadKey}
                                 />
                               </div>
                             ))}
@@ -908,6 +915,7 @@ export default function WorkoutTracker() {
                                                 </span>
                                                 <RepCounter
                                                   id={`reps-${currentWeek}-${day}-${index}-set${set}`}
+                                                  reloadKey={reloadKey}
                                                 />
                                               </div>
                                             ))}
